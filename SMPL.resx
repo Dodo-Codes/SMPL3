@@ -1,0 +1,720 @@
+﻿<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="mainPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="mainPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="leftPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="leftPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="leftPanel.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
+    <value>Horizontal</value>
+  </data>
+  <data name="sceneAngle.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
+  </data>
+  <data name="sceneAngle.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 309</value>
+  </data>
+  <data name="sceneAngle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>489, 17</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="sceneAngle.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;sceneAngle.Name" xml:space="preserve">
+    <value>sceneAngle</value>
+  </data>
+  <data name="&gt;&gt;sceneAngle.Type" xml:space="preserve">
+    <value>System.Windows.Forms.HScrollBar, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;sceneAngle.Parent" xml:space="preserve">
+    <value>sceneTab</value>
+  </data>
+  <data name="&gt;&gt;sceneAngle.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="sceneZoom.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="sceneZoom.Location" type="System.Drawing.Point, System.Drawing">
+    <value>492, 3</value>
+  </data>
+  <data name="sceneZoom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>17, 323</value>
+  </data>
+  <data name="sceneZoom.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;sceneZoom.Name" xml:space="preserve">
+    <value>sceneZoom</value>
+  </data>
+  <data name="&gt;&gt;sceneZoom.Type" xml:space="preserve">
+    <value>System.Windows.Forms.VScrollBar, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;sceneZoom.Parent" xml:space="preserve">
+    <value>sceneTab</value>
+  </data>
+  <data name="&gt;&gt;sceneZoom.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="sceneMousePos.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="sceneMousePos.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="sceneMousePos.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 11.25pt</value>
+  </data>
+  <data name="sceneMousePos.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="sceneMousePos.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 22</value>
+  </data>
+  <data name="sceneMousePos.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="sceneMousePos.Text" xml:space="preserve">
+    <value>mousePos</value>
+  </data>
+  <data name="sceneMousePos.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;sceneMousePos.Name" xml:space="preserve">
+    <value>sceneMousePos</value>
+  </data>
+  <data name="&gt;&gt;sceneMousePos.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;sceneMousePos.Parent" xml:space="preserve">
+    <value>sceneTab</value>
+  </data>
+  <data name="&gt;&gt;sceneMousePos.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="gridSpacing.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="gridSpacing.Location" type="System.Drawing.Point, System.Drawing">
+    <value>107, 19</value>
+  </data>
+  <data name="gridSpacing.Mask" xml:space="preserve">
+    <value>00000</value>
+  </data>
+  <data name="gridSpacing.PromptChar" type="System.Char, mscorlib" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="gridSpacing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>35, 23</value>
+  </data>
+  <data name="gridSpacing.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="gridSpacing.Text" xml:space="preserve">
+    <value>100</value>
+  </data>
+  <metadata name="toolTipGridSpacing.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>314, 20</value>
+  </metadata>
+  <data name="gridSpacing.ToolTip" xml:space="preserve">
+    <value>Spacing.</value>
+  </data>
+  <data name="&gt;&gt;gridSpacing.Name" xml:space="preserve">
+    <value>gridSpacing</value>
+  </data>
+  <data name="&gt;&gt;gridSpacing.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MaskedTextBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;gridSpacing.Parent" xml:space="preserve">
+    <value>groupBoxGrid</value>
+  </data>
+  <data name="&gt;&gt;gridSpacing.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="gridThickness.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="gridThickness.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="gridThickness.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 19</value>
+  </data>
+  <data name="gridThickness.Size" type="System.Drawing.Size, System.Drawing">
+    <value>104, 23</value>
+  </data>
+  <data name="gridThickness.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <metadata name="toolTipGridThickness.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="gridThickness.ToolTip" xml:space="preserve">
+    <value>Thickness.</value>
+  </data>
+  <data name="&gt;&gt;gridThickness.Name" xml:space="preserve">
+    <value>gridThickness</value>
+  </data>
+  <data name="&gt;&gt;gridThickness.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;gridThickness.Parent" xml:space="preserve">
+    <value>groupBoxGrid</value>
+  </data>
+  <data name="&gt;&gt;gridThickness.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="groupBoxGrid.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="groupBoxGrid.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="groupBoxGrid.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 45</value>
+  </data>
+  <data name="groupBoxGrid.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="groupBoxGrid.Text" xml:space="preserve">
+    <value>Grid</value>
+  </data>
+  <data name="&gt;&gt;groupBoxGrid.Name" xml:space="preserve">
+    <value>groupBoxGrid</value>
+  </data>
+  <data name="&gt;&gt;groupBoxGrid.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBoxGrid.Parent" xml:space="preserve">
+    <value>sceneStatus</value>
+  </data>
+  <data name="&gt;&gt;groupBoxGrid.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="resetCamera.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="resetCamera.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="resetCamera.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 19</value>
+  </data>
+  <data name="resetCamera.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 23</value>
+  </data>
+  <data name="resetCamera.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="resetCamera.Text" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="&gt;&gt;resetCamera.Name" xml:space="preserve">
+    <value>resetCamera</value>
+  </data>
+  <data name="&gt;&gt;resetCamera.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;resetCamera.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;resetCamera.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="groupBox1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>159, 3</value>
+  </data>
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 45</value>
+  </data>
+  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
+    <value>sceneStatus</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="sceneStatus.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
+  </data>
+  <data name="sceneStatus.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 326</value>
+  </data>
+  <data name="sceneStatus.Size" type="System.Drawing.Size, System.Drawing">
+    <value>506, 76</value>
+  </data>
+  <data name="sceneStatus.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;sceneStatus.Name" xml:space="preserve">
+    <value>sceneStatus</value>
+  </data>
+  <data name="&gt;&gt;sceneStatus.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;sceneStatus.Parent" xml:space="preserve">
+    <value>sceneTab</value>
+  </data>
+  <data name="&gt;&gt;sceneStatus.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="sceneTab.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 24</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="sceneTab.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="sceneTab.Size" type="System.Drawing.Size, System.Drawing">
+    <value>512, 405</value>
+  </data>
+  <data name="sceneTab.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="sceneTab.Text" xml:space="preserve">
+    <value>Scene</value>
+  </data>
+  <data name="&gt;&gt;sceneTab.Name" xml:space="preserve">
+    <value>sceneTab</value>
+  </data>
+  <data name="&gt;&gt;sceneTab.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;sceneTab.Parent" xml:space="preserve">
+    <value>topLeftTabs</value>
+  </data>
+  <data name="&gt;&gt;sceneTab.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="gameTab.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 24</value>
+  </data>
+  <data name="gameTab.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="gameTab.Size" type="System.Drawing.Size, System.Drawing">
+    <value>512, 405</value>
+  </data>
+  <data name="gameTab.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="gameTab.Text" xml:space="preserve">
+    <value>Game</value>
+  </data>
+  <data name="&gt;&gt;gameTab.Name" xml:space="preserve">
+    <value>gameTab</value>
+  </data>
+  <data name="&gt;&gt;gameTab.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;gameTab.Parent" xml:space="preserve">
+    <value>topLeftTabs</value>
+  </data>
+  <data name="&gt;&gt;gameTab.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="topLeftTabs.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="topLeftTabs.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="topLeftTabs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>520, 433</value>
+  </data>
+  <data name="topLeftTabs.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;topLeftTabs.Name" xml:space="preserve">
+    <value>topLeftTabs</value>
+  </data>
+  <data name="&gt;&gt;topLeftTabs.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;topLeftTabs.Parent" xml:space="preserve">
+    <value>leftPanel.Panel1</value>
+  </data>
+  <data name="&gt;&gt;topLeftTabs.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;leftPanel.Panel1.Name" xml:space="preserve">
+    <value>leftPanel.Panel1</value>
+  </data>
+  <data name="&gt;&gt;leftPanel.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;leftPanel.Panel1.Parent" xml:space="preserve">
+    <value>leftPanel</value>
+  </data>
+  <data name="&gt;&gt;leftPanel.Panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="outputActive.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="outputActive.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="outputActive.Size" type="System.Drawing.Size, System.Drawing">
+    <value>64, 19</value>
+  </data>
+  <data name="outputActive.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="outputActive.Text" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+  <metadata name="toolTipDisableLog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>170, 17</value>
+  </metadata>
+  <data name="outputActive.ToolTip" xml:space="preserve">
+    <value>Prevent the code from logging.</value>
+  </data>
+  <data name="&gt;&gt;outputActive.Name" xml:space="preserve">
+    <value>outputActive</value>
+  </data>
+  <data name="&gt;&gt;outputActive.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;outputActive.Parent" xml:space="preserve">
+    <value>outputStatus</value>
+  </data>
+  <data name="&gt;&gt;outputActive.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="outputClear.Location" type="System.Drawing.Point, System.Drawing">
+    <value>73, 3</value>
+  </data>
+  <data name="outputClear.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 22</value>
+  </data>
+  <data name="outputClear.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="outputClear.Text" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="&gt;&gt;outputClear.Name" xml:space="preserve">
+    <value>outputClear</value>
+  </data>
+  <data name="&gt;&gt;outputClear.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;outputClear.Parent" xml:space="preserve">
+    <value>outputStatus</value>
+  </data>
+  <data name="&gt;&gt;outputClear.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="outputStatus.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="outputStatus.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="outputStatus.Size" type="System.Drawing.Size, System.Drawing">
+    <value>502, 25</value>
+  </data>
+  <data name="outputStatus.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;outputStatus.Name" xml:space="preserve">
+    <value>outputStatus</value>
+  </data>
+  <data name="&gt;&gt;outputStatus.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;outputStatus.Parent" xml:space="preserve">
+    <value>logTab</value>
+  </data>
+  <data name="&gt;&gt;outputStatus.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="log.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="log.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 12pt</value>
+  </data>
+  <data name="log.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="log.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
+  </data>
+  <data name="log.Size" type="System.Drawing.Size, System.Drawing">
+    <value>502, 78</value>
+  </data>
+  <data name="log.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="log.Text" xml:space="preserve">
+    <value>
+Welcome to SMPL!
+</value>
+  </data>
+  <data name="&gt;&gt;log.Name" xml:space="preserve">
+    <value>log</value>
+  </data>
+  <data name="&gt;&gt;log.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RichTextBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;log.Parent" xml:space="preserve">
+    <value>logTab</value>
+  </data>
+  <data name="&gt;&gt;log.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="logTab.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 24</value>
+  </data>
+  <data name="logTab.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="logTab.Size" type="System.Drawing.Size, System.Drawing">
+    <value>512, 88</value>
+  </data>
+  <data name="logTab.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="logTab.Text" xml:space="preserve">
+    <value>Log</value>
+  </data>
+  <data name="&gt;&gt;logTab.Name" xml:space="preserve">
+    <value>logTab</value>
+  </data>
+  <data name="&gt;&gt;logTab.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;logTab.Parent" xml:space="preserve">
+    <value>bottomLeftTabs</value>
+  </data>
+  <data name="&gt;&gt;logTab.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="bottomLeftTabs.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="bottomLeftTabs.ItemSize" type="System.Drawing.Size, System.Drawing">
+    <value>60, 20</value>
+  </data>
+  <data name="bottomLeftTabs.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="bottomLeftTabs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>520, 116</value>
+  </data>
+  <data name="bottomLeftTabs.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;bottomLeftTabs.Name" xml:space="preserve">
+    <value>bottomLeftTabs</value>
+  </data>
+  <data name="&gt;&gt;bottomLeftTabs.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;bottomLeftTabs.Parent" xml:space="preserve">
+    <value>leftPanel.Panel2</value>
+  </data>
+  <data name="&gt;&gt;bottomLeftTabs.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;leftPanel.Panel2.Name" xml:space="preserve">
+    <value>leftPanel.Panel2</value>
+  </data>
+  <data name="&gt;&gt;leftPanel.Panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;leftPanel.Panel2.Parent" xml:space="preserve">
+    <value>leftPanel</value>
+  </data>
+  <data name="&gt;&gt;leftPanel.Panel2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="leftPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>524, 561</value>
+  </data>
+  <data name="leftPanel.SplitterDistance" type="System.Int32, mscorlib">
+    <value>437</value>
+  </data>
+  <data name="leftPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;leftPanel.Name" xml:space="preserve">
+    <value>leftPanel</value>
+  </data>
+  <data name="&gt;&gt;leftPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;leftPanel.Parent" xml:space="preserve">
+    <value>mainPanel.Panel1</value>
+  </data>
+  <data name="&gt;&gt;leftPanel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;mainPanel.Panel1.Name" xml:space="preserve">
+    <value>mainPanel.Panel1</value>
+  </data>
+  <data name="&gt;&gt;mainPanel.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mainPanel.Panel1.Parent" xml:space="preserve">
+    <value>mainPanel</value>
+  </data>
+  <data name="&gt;&gt;mainPanel.Panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;mainPanel.Panel2.Name" xml:space="preserve">
+    <value>mainPanel.Panel2</value>
+  </data>
+  <data name="&gt;&gt;mainPanel.Panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mainPanel.Panel2.Parent" xml:space="preserve">
+    <value>mainPanel</value>
+  </data>
+  <data name="&gt;&gt;mainPanel.Panel2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="mainPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>784, 561</value>
+  </data>
+  <data name="mainPanel.SplitterDistance" type="System.Int32, mscorlib">
+    <value>524</value>
+  </data>
+  <data name="mainPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;mainPanel.Name" xml:space="preserve">
+    <value>mainPanel</value>
+  </data>
+  <data name="&gt;&gt;mainPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mainPanel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;mainPanel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>288</value>
+  </metadata>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>784, 561</value>
+  </data>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterScreen</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>SMPL</value>
+  </data>
+  <data name="&gt;&gt;toolTipGridThickness.Name" xml:space="preserve">
+    <value>toolTipGridThickness</value>
+  </data>
+  <data name="&gt;&gt;toolTipGridThickness.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolTipDisableLog.Name" xml:space="preserve">
+    <value>toolTipDisableLog</value>
+  </data>
+  <data name="&gt;&gt;toolTipDisableLog.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolTipGridSpacing.Name" xml:space="preserve">
+    <value>toolTipGridSpacing</value>
+  </data>
+  <data name="&gt;&gt;toolTipGridSpacing.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>SMPL</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+</root>
