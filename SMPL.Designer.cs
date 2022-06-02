@@ -34,6 +34,11 @@
 			this.leftPanel = new System.Windows.Forms.SplitContainer();
 			this.topLeftTabs = new System.Windows.Forms.TabControl();
 			this.sceneTab = new System.Windows.Forms.TabPage();
+			this.sceneRightClickMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.sceneRightClickMenuCreate = new System.Windows.Forms.ToolStripMenuItem();
+			this.spriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.sceneRightClickSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.sceneRightClickMenuResetView = new System.Windows.Forms.ToolStripMenuItem();
 			this.sceneAngle = new System.Windows.Forms.HScrollBar();
 			this.sceneZoom = new System.Windows.Forms.VScrollBar();
 			this.sceneMousePos = new System.Windows.Forms.Label();
@@ -41,14 +46,12 @@
 			this.groupBoxGrid = new System.Windows.Forms.GroupBox();
 			this.gridSpacing = new System.Windows.Forms.MaskedTextBox();
 			this.gridThickness = new System.Windows.Forms.TrackBar();
-			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.resetCamera = new System.Windows.Forms.Button();
 			this.gameTab = new System.Windows.Forms.TabPage();
 			this.bottomLeftTabs = new System.Windows.Forms.TabControl();
 			this.logTab = new System.Windows.Forms.TabPage();
 			this.outputStatus = new System.Windows.Forms.FlowLayoutPanel();
+			this.command = new System.Windows.Forms.MaskedTextBox();
 			this.outputActive = new System.Windows.Forms.CheckBox();
-			this.outputClear = new System.Windows.Forms.Button();
 			this.log = new System.Windows.Forms.RichTextBox();
 			this.toolTipGridThickness = new System.Windows.Forms.ToolTip(this.components);
 			this.toolTipDisableLog = new System.Windows.Forms.ToolTip(this.components);
@@ -62,10 +65,10 @@
 			this.leftPanel.SuspendLayout();
 			this.topLeftTabs.SuspendLayout();
 			this.sceneTab.SuspendLayout();
+			this.sceneRightClickMenu.SuspendLayout();
 			this.sceneStatus.SuspendLayout();
 			this.groupBoxGrid.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.gridThickness)).BeginInit();
-			this.groupBox1.SuspendLayout();
 			this.bottomLeftTabs.SuspendLayout();
 			this.logTab.SuspendLayout();
 			this.outputStatus.SuspendLayout();
@@ -111,15 +114,51 @@
 			// sceneTab
 			// 
 			this.sceneTab.BackColor = System.Drawing.Color.Black;
+			this.sceneTab.ContextMenuStrip = this.sceneRightClickMenu;
 			this.sceneTab.Controls.Add(this.sceneAngle);
 			this.sceneTab.Controls.Add(this.sceneZoom);
 			this.sceneTab.Controls.Add(this.sceneMousePos);
 			this.sceneTab.Controls.Add(this.sceneStatus);
 			resources.ApplyResources(this.sceneTab, "sceneTab");
 			this.sceneTab.Name = "sceneTab";
+			this.sceneTab.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnMouseDownScene);
 			this.sceneTab.MouseEnter += new System.EventHandler(this.OnMouseEnterScene);
 			this.sceneTab.MouseLeave += new System.EventHandler(this.OnMouseLeaveScene);
 			this.sceneTab.MouseMove += new System.Windows.Forms.MouseEventHandler(this.OnMouseMoveScene);
+			this.sceneTab.MouseUp += new System.Windows.Forms.MouseEventHandler(this.OnMouseUpScene);
+			// 
+			// sceneRightClickMenu
+			// 
+			this.sceneRightClickMenu.BackColor = System.Drawing.Color.White;
+			this.sceneRightClickMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sceneRightClickMenuCreate,
+            this.sceneRightClickSeparator1,
+            this.sceneRightClickMenuResetView});
+			this.sceneRightClickMenu.Name = "sceneRightClickMenu";
+			resources.ApplyResources(this.sceneRightClickMenu, "sceneRightClickMenu");
+			// 
+			// sceneRightClickMenuCreate
+			// 
+			this.sceneRightClickMenuCreate.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.spriteToolStripMenuItem});
+			this.sceneRightClickMenuCreate.Name = "sceneRightClickMenuCreate";
+			resources.ApplyResources(this.sceneRightClickMenuCreate, "sceneRightClickMenuCreate");
+			// 
+			// spriteToolStripMenuItem
+			// 
+			this.spriteToolStripMenuItem.Name = "spriteToolStripMenuItem";
+			resources.ApplyResources(this.spriteToolStripMenuItem, "spriteToolStripMenuItem");
+			// 
+			// sceneRightClickSeparator1
+			// 
+			this.sceneRightClickSeparator1.Name = "sceneRightClickSeparator1";
+			resources.ApplyResources(this.sceneRightClickSeparator1, "sceneRightClickSeparator1");
+			// 
+			// sceneRightClickMenuResetView
+			// 
+			this.sceneRightClickMenuResetView.Name = "sceneRightClickMenuResetView";
+			resources.ApplyResources(this.sceneRightClickMenuResetView, "sceneRightClickMenuResetView");
+			this.sceneRightClickMenuResetView.Click += new System.EventHandler(this.OnSceneRightClickMenuResetView);
 			// 
 			// sceneAngle
 			// 
@@ -131,6 +170,7 @@
 			// sceneZoom
 			// 
 			resources.ApplyResources(this.sceneZoom, "sceneZoom");
+			this.sceneZoom.Maximum = 200;
 			this.sceneZoom.Name = "sceneZoom";
 			this.sceneZoom.Value = 10;
 			this.sceneZoom.ValueChanged += new System.EventHandler(this.OnSceneZoom);
@@ -147,7 +187,6 @@
 			// 
 			this.sceneStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.sceneStatus.Controls.Add(this.groupBoxGrid);
-			this.sceneStatus.Controls.Add(this.groupBox1);
 			resources.ApplyResources(this.sceneStatus, "sceneStatus");
 			this.sceneStatus.Name = "sceneStatus";
 			// 
@@ -179,23 +218,6 @@
 			this.toolTipGridThickness.SetToolTip(this.gridThickness, resources.GetString("gridThickness.ToolTip"));
 			this.gridThickness.Value = 2;
 			// 
-			// groupBox1
-			// 
-			this.groupBox1.Controls.Add(this.resetCamera);
-			resources.ApplyResources(this.groupBox1, "groupBox1");
-			this.groupBox1.ForeColor = System.Drawing.Color.White;
-			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.TabStop = false;
-			// 
-			// resetCamera
-			// 
-			this.resetCamera.Cursor = System.Windows.Forms.Cursors.Hand;
-			resources.ApplyResources(this.resetCamera, "resetCamera");
-			this.resetCamera.ForeColor = System.Drawing.Color.Black;
-			this.resetCamera.Name = "resetCamera";
-			this.resetCamera.UseVisualStyleBackColor = true;
-			this.resetCamera.Click += new System.EventHandler(this.OnResetSceneCamera);
-			// 
 			// gameTab
 			// 
 			this.gameTab.BackColor = System.Drawing.Color.Black;
@@ -224,10 +246,19 @@
 			// outputStatus
 			// 
 			this.outputStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.outputStatus.Controls.Add(this.command);
 			this.outputStatus.Controls.Add(this.outputActive);
-			this.outputStatus.Controls.Add(this.outputClear);
 			resources.ApplyResources(this.outputStatus, "outputStatus");
 			this.outputStatus.Name = "outputStatus";
+			// 
+			// command
+			// 
+			this.command.AsciiOnly = true;
+			this.command.BackColor = System.Drawing.Color.Black;
+			this.command.ForeColor = System.Drawing.Color.White;
+			resources.ApplyResources(this.command, "command");
+			this.command.Name = "command";
+			this.command.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.OnCommandKeyPress);
 			// 
 			// outputActive
 			// 
@@ -237,14 +268,6 @@
 			this.outputActive.Name = "outputActive";
 			this.toolTipDisableLog.SetToolTip(this.outputActive, resources.GetString("outputActive.ToolTip"));
 			this.outputActive.UseVisualStyleBackColor = true;
-			// 
-			// outputClear
-			// 
-			this.outputClear.Cursor = System.Windows.Forms.Cursors.Hand;
-			resources.ApplyResources(this.outputClear, "outputClear");
-			this.outputClear.Name = "outputClear";
-			this.outputClear.UseVisualStyleBackColor = true;
-			this.outputClear.Click += new System.EventHandler(this.OnOutputClear);
 			// 
 			// log
 			// 
@@ -300,11 +323,11 @@
 			this.topLeftTabs.ResumeLayout(false);
 			this.sceneTab.ResumeLayout(false);
 			this.sceneTab.PerformLayout();
+			this.sceneRightClickMenu.ResumeLayout(false);
 			this.sceneStatus.ResumeLayout(false);
 			this.groupBoxGrid.ResumeLayout(false);
 			this.groupBoxGrid.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.gridThickness)).EndInit();
-			this.groupBox1.ResumeLayout(false);
 			this.bottomLeftTabs.ResumeLayout(false);
 			this.logTab.ResumeLayout(false);
 			this.outputStatus.ResumeLayout(false);
@@ -321,7 +344,6 @@
 		private TabControl bottomLeftTabs;
 		private TabPage logTab;
 		private RichTextBox log;
-		private Button outputClear;
 		private FlowLayoutPanel outputStatus;
 		private CheckBox outputActive;
 		private TabControl topLeftTabs;
@@ -329,13 +351,17 @@
 		private TabPage gameTab;
 		private VScrollBar sceneZoom;
 		private HScrollBar sceneAngle;
-		private Button resetCamera;
 		private TrackBar gridThickness;
 		private ToolTip toolTipGridThickness;
 		private ToolTip toolTipDisableLog;
 		private MaskedTextBox gridSpacing;
 		private ToolTip toolTipGridSpacing;
 		private GroupBox groupBoxGrid;
-		private GroupBox groupBox1;
+		private MaskedTextBox command;
+		private ContextMenuStrip sceneRightClickMenu;
+		private ToolStripMenuItem sceneRightClickMenuCreate;
+		private ToolStripMenuItem spriteToolStripMenuItem;
+		private ToolStripSeparator sceneRightClickSeparator1;
+		private ToolStripMenuItem sceneRightClickMenuResetView;
 	}
 }

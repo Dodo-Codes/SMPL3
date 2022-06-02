@@ -74,6 +74,39 @@
   <data name="leftPanel.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
     <value>Horizontal</value>
   </data>
+  <metadata name="sceneRightClickMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>470, 20</value>
+  </metadata>
+  <data name="spriteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>104, 22</value>
+  </data>
+  <data name="spriteToolStripMenuItem.Text" xml:space="preserve">
+    <value>Sprite</value>
+  </data>
+  <data name="sceneRightClickMenuCreate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>129, 22</value>
+  </data>
+  <data name="sceneRightClickMenuCreate.Text" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="sceneRightClickSeparator1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>126, 6</value>
+  </data>
+  <data name="sceneRightClickMenuResetView.Size" type="System.Drawing.Size, System.Drawing">
+    <value>129, 22</value>
+  </data>
+  <data name="sceneRightClickMenuResetView.Text" xml:space="preserve">
+    <value>Reset view</value>
+  </data>
+  <data name="sceneRightClickMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 54</value>
+  </data>
+  <data name="&gt;&gt;sceneRightClickMenu.Name" xml:space="preserve">
+    <value>sceneRightClickMenu</value>
+  </data>
+  <data name="&gt;&gt;sceneRightClickMenu.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="sceneAngle.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Bottom</value>
   </data>
@@ -81,7 +114,7 @@
     <value>3, 309</value>
   </data>
   <data name="sceneAngle.Size" type="System.Drawing.Size, System.Drawing">
-    <value>489, 17</value>
+    <value>511, 17</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="sceneAngle.TabIndex" type="System.Int32, mscorlib">
@@ -103,7 +136,7 @@
     <value>Right</value>
   </data>
   <data name="sceneZoom.Location" type="System.Drawing.Point, System.Drawing">
-    <value>492, 3</value>
+    <value>514, 3</value>
   </data>
   <data name="sceneZoom.Size" type="System.Drawing.Size, System.Drawing">
     <value>17, 323</value>
@@ -258,63 +291,6 @@
   <data name="&gt;&gt;groupBoxGrid.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="resetCamera.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="resetCamera.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="resetCamera.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 19</value>
-  </data>
-  <data name="resetCamera.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 23</value>
-  </data>
-  <data name="resetCamera.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="resetCamera.Text" xml:space="preserve">
-    <value>Reset</value>
-  </data>
-  <data name="&gt;&gt;resetCamera.Name" xml:space="preserve">
-    <value>resetCamera</value>
-  </data>
-  <data name="&gt;&gt;resetCamera.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;resetCamera.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;resetCamera.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="groupBox1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>159, 3</value>
-  </data>
-  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>50, 45</value>
-  </data>
-  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>View</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
-    <value>sceneStatus</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="sceneStatus.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Bottom</value>
   </data>
@@ -322,7 +298,7 @@
     <value>3, 326</value>
   </data>
   <data name="sceneStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>506, 76</value>
+    <value>528, 76</value>
   </data>
   <data name="sceneStatus.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -347,7 +323,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="sceneTab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>512, 405</value>
+    <value>534, 405</value>
   </data>
   <data name="sceneTab.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -374,7 +350,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="gameTab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>512, 405</value>
+    <value>534, 405</value>
   </data>
   <data name="gameTab.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -401,7 +377,7 @@
     <value>0, 0</value>
   </data>
   <data name="topLeftTabs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>520, 433</value>
+    <value>542, 433</value>
   </data>
   <data name="topLeftTabs.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -430,14 +406,38 @@
   <data name="&gt;&gt;leftPanel.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="command.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="command.Size" type="System.Drawing.Size, System.Drawing">
+    <value>204, 23</value>
+  </data>
+  <data name="command.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;command.Name" xml:space="preserve">
+    <value>command</value>
+  </data>
+  <data name="&gt;&gt;command.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MaskedTextBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;command.Parent" xml:space="preserve">
+    <value>outputStatus</value>
+  </data>
+  <data name="&gt;&gt;command.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="outputActive.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="outputActive.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 11.25pt</value>
+  </data>
   <data name="outputActive.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+    <value>213, 3</value>
   </data>
   <data name="outputActive.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 19</value>
+    <value>78, 24</value>
   </data>
   <data name="outputActive.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -461,30 +461,6 @@
     <value>outputStatus</value>
   </data>
   <data name="&gt;&gt;outputActive.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="outputClear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>73, 3</value>
-  </data>
-  <data name="outputClear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 22</value>
-  </data>
-  <data name="outputClear.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="outputClear.Text" xml:space="preserve">
-    <value>Clear</value>
-  </data>
-  <data name="&gt;&gt;outputClear.Name" xml:space="preserve">
-    <value>outputClear</value>
-  </data>
-  <data name="&gt;&gt;outputClear.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;outputClear.Parent" xml:space="preserve">
-    <value>outputStatus</value>
-  </data>
-  <data name="&gt;&gt;outputClear.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="outputStatus.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -494,7 +470,7 @@
     <value>3, 3</value>
   </data>
   <data name="outputStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>502, 25</value>
+    <value>524, 30</value>
   </data>
   <data name="outputStatus.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -515,7 +491,7 @@
     <value>Fill</value>
   </data>
   <data name="log.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 12pt</value>
+    <value>Segoe UI, 14.25pt</value>
   </data>
   <data name="log.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
@@ -524,7 +500,7 @@
     <value>No</value>
   </data>
   <data name="log.Size" type="System.Drawing.Size, System.Drawing">
-    <value>502, 78</value>
+    <value>524, 78</value>
   </data>
   <data name="log.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -532,6 +508,8 @@
   <data name="log.Text" xml:space="preserve">
     <value>
 Welcome to SMPL!
+Type 'help' in the box above to see all commands.
+
 </value>
   </data>
   <data name="&gt;&gt;log.Name" xml:space="preserve">
@@ -553,7 +531,7 @@ Welcome to SMPL!
     <value>3, 3, 3, 3</value>
   </data>
   <data name="logTab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>512, 88</value>
+    <value>534, 88</value>
   </data>
   <data name="logTab.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -583,7 +561,7 @@ Welcome to SMPL!
     <value>0, 0</value>
   </data>
   <data name="bottomLeftTabs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>520, 116</value>
+    <value>542, 116</value>
   </data>
   <data name="bottomLeftTabs.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -613,7 +591,7 @@ Welcome to SMPL!
     <value>1</value>
   </data>
   <data name="leftPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>524, 561</value>
+    <value>546, 561</value>
   </data>
   <data name="leftPanel.SplitterDistance" type="System.Int32, mscorlib">
     <value>437</value>
@@ -661,7 +639,7 @@ Welcome to SMPL!
     <value>784, 561</value>
   </data>
   <data name="mainPanel.SplitterDistance" type="System.Int32, mscorlib">
-    <value>524</value>
+    <value>546</value>
   </data>
   <data name="mainPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -676,7 +654,7 @@ Welcome to SMPL!
     <value>$this</value>
   </data>
   <data name="&gt;&gt;mainPanel.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -692,6 +670,30 @@ Welcome to SMPL!
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>SMPL</value>
+  </data>
+  <data name="&gt;&gt;sceneRightClickMenuCreate.Name" xml:space="preserve">
+    <value>sceneRightClickMenuCreate</value>
+  </data>
+  <data name="&gt;&gt;sceneRightClickMenuCreate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;spriteToolStripMenuItem.Name" xml:space="preserve">
+    <value>spriteToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;spriteToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;sceneRightClickSeparator1.Name" xml:space="preserve">
+    <value>sceneRightClickSeparator1</value>
+  </data>
+  <data name="&gt;&gt;sceneRightClickSeparator1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;sceneRightClickMenuResetView.Name" xml:space="preserve">
+    <value>sceneRightClickMenuResetView</value>
+  </data>
+  <data name="&gt;&gt;sceneRightClickMenuResetView.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolTipGridThickness.Name" xml:space="preserve">
     <value>toolTipGridThickness</value>

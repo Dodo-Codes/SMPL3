@@ -36,7 +36,7 @@ namespace SMPL.Tools
 
 		public static void Log(object message, Color color = default, bool newLine = true)
 		{
-			SMPL.instance.LogToOutput(message, color, newLine);
+			SMPL.instance.Log(message, color, newLine);
 		}
 		public static void LogError(object message, string tip = default, int callChainIndex = 1)
 		{

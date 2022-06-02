@@ -1,13 +1,14 @@
+global using Color = System.Drawing.Color;
+global using System.Numerics;
+global using Newtonsoft.Json;
 global using SFML.Graphics;
 global using SFML.Audio;
 global using SFML.System;
 global using SFML.Window;
-global using Color = System.Drawing.Color;
 global using SMPL.Parts;
 global using SMPL.Graphics;
-global using System.Numerics;
+global using SMPL.Commands;
 global using SMPL.Tools;
-global using Newtonsoft.Json;
 
 namespace SMPL
 {
@@ -16,7 +17,8 @@ namespace SMPL
 		internal static SMPL instance;
 		internal static RenderWindow scene, game;
 
-		private Vector2 prevMousePos;
+		private bool isSelecting;
+		private Vector2 prevMousePos, selectStartPos;
 		private readonly System.Windows.Forms.Timer loop;
 		private readonly Camera sceneCamera;
 
@@ -36,8 +38,6 @@ namespace SMPL
 			loop = new() { Interval = 1 };
 			loop.Tick += OnUpdate;
 			loop.Start();
-
-			Debug.LogError("f");
 
 			CenterView(scene);
 			CenterView(game);
@@ -65,11 +65,8 @@ namespace SMPL
 
 			void ProcessCamera(Camera camera, RenderWindow window)
 			{
-				var view = camera.RenderTexture.GetView();
-				view.Size = new(topLeftTabs.Size.Width, topLeftTabs.Size.Height);
-				camera.RenderTexture.SetView(view);
+				window.Size = new((uint)topLeftTabs.Width, (uint)topLeftTabs.Height);
 
-				window.Size = new((uint)topLeftTabs.Size.Width, (uint)topLeftTabs.Size.Height);
 				window.Clear();
 				camera.Fill();
 				camera.Update();
@@ -78,7 +75,13 @@ namespace SMPL
 					Scene.UpdateCurrentScene();
 				else
 				{
+					var view = camera.RenderTexture.GetView();
+					var sc = camera.GetPart<Area>().Scale;
+					view.Size = new(window.Size.X * sc, window.Size.Y * sc);
+					camera.RenderTexture.SetView(view);
+
 					TryDrawGrid();
+					TryDrawSelection();
 					TryShowMousePos();
 				}
 
@@ -92,7 +95,8 @@ namespace SMPL
 			if (gridThickness.Value == gridThickness.Minimum)
 				return;
 
-			var verts = new VertexArray(PrimitiveType.Quads);
+			var cellVerts = new VertexArray(PrimitiveType.Quads);
+			var specialCellVerts = new VertexArray(PrimitiveType.Quads);
 			var area = sceneCamera.GetPart<Area>();
 			var sc = area.Scale;
 			var sz = new Vector2(sceneTab.Width, sceneTab.Height) * sc;
@@ -100,6 +104,7 @@ namespace SMPL
 			var spacing = GetGridSpacing();
 
 			thickness *= sc;
+			thickness *= 0.5f;
 
 			for (float i = 0; i <= sz.X * 4; i += spacing)
 			{
@@ -108,11 +113,12 @@ namespace SMPL
 				var top = new Vector2(x, y - sz.Y * 2).PointToGrid(new(spacing));
 				var bot = new Vector2(x, y + sz.Y * 2).PointToGrid(new(spacing));
 				var col = GetColor(top.X);
+				var verts = GetVertexArray(top.X);
 
-				verts.Append(new(top.ToSFML(), col));
+				verts.Append(new(top.PointMoveAtAngle(180, thickness, false).ToSFML(), col));
 				verts.Append(new(top.PointMoveAtAngle(0, thickness, false).ToSFML(), col));
 				verts.Append(new(bot.PointMoveAtAngle(0, thickness, false).ToSFML(), col));
-				verts.Append(new(bot.ToSFML(), col));
+				verts.Append(new(bot.PointMoveAtAngle(180, thickness, false).ToSFML(), col));
 			}
 			for (float i = 0; i <= sz.Y * 4; i += spacing)
 			{
@@ -121,14 +127,25 @@ namespace SMPL
 				var left = new Vector2(x - sz.X * 2, y).PointToGrid(new(spacing));
 				var right = new Vector2(x + sz.X * 2, y).PointToGrid(new(spacing));
 				var col = GetColor(left.Y);
+				var verts = GetVertexArray(left.Y);
 
-				verts.Append(new(left.ToSFML(), col));
+				verts.Append(new(left.PointMoveAtAngle(270, thickness, false).ToSFML(), col));
 				verts.Append(new(left.PointMoveAtAngle(90, thickness, false).ToSFML(), col));
 				verts.Append(new(right.PointMoveAtAngle(90, thickness, false).ToSFML(), col));
-				verts.Append(new(right.ToSFML(), col));
+				verts.Append(new(right.PointMoveAtAngle(270, thickness, false).ToSFML(), col));
 			}
 
-			sceneCamera.RenderTexture.Draw(verts);
+			var v = new Vertex[]
+			{
+				new(new(0, 0), SFML.Graphics.Color.Red),
+				new(new(100, 0), SFML.Graphics.Color.Red),
+				new(new(100, 100), SFML.Graphics.Color.Red),
+				new(new(0, 100), SFML.Graphics.Color.Red),
+			};
+
+			sceneCamera.RenderTexture.Draw(cellVerts);
+			sceneCamera.RenderTexture.Draw(specialCellVerts);
+			sceneCamera.RenderTexture.Draw(v, PrimitiveType.Quads);
 
 			SFML.Graphics.Color GetColor(float coordinate)
 			{
@@ -137,7 +154,11 @@ namespace SMPL
 				else if (coordinate % 1000 == 0)
 					return SFML.Graphics.Color.White;
 
-				return new SFML.Graphics.Color(255, 255, 255, 100);
+				return new SFML.Graphics.Color(50, 50, 50);
+			}
+			VertexArray GetVertexArray(float coordinate)
+			{
+				return coordinate == 0 || coordinate % 1000 == 0 ? specialCellVerts : cellVerts;
 			}
 		}
 		private void TryShowMousePos()
@@ -152,6 +173,35 @@ namespace SMPL
 				$"Cursor [{(int)mousePos.X} {(int)mousePos.Y}]\n" +
 				$"Grid [{(int)inGrid.X} {(int)inGrid.Y}]";
 		}
+		private void TryDrawSelection()
+		{
+			if (isSelecting == false)
+				return;
+
+			var ang = sceneCamera.GetPart<Area>().Angle;
+			var mousePos = sceneCamera.MouseCursorPosition;
+			var topLeft = selectStartPos;
+			var botRight = mousePos;
+			var side = (botRight.X - topLeft.X) * MathF.Sin(ang) - (botRight.Y - topLeft.Y) * MathF.Cos(ang);
+			var topRight = new Vector2(topLeft.X + side * MathF.Sin(ang), topLeft.Y - side * MathF.Cos(ang));
+			var botLeft = new Vector2(botRight.X - side * MathF.Sin(ang), botRight.Y - side * MathF.Cos(ang));
+
+			//	side = (x2 - x1)*sin(angle) - (y2 - y1)*cos(angle)
+			//	x3 = x1 + side*sin(angle)
+			//	y3 = y1 - side*cos(angle)
+			//	x4 = x2 - side*sin(angle)
+			//	y4 = y2 + side*cos(angle)
+
+			var verts = new Vertex[]
+			{
+				new(topLeft.ToSFML()),
+				new(topRight.ToSFML()),
+				new(botRight.ToSFML()),
+				new(botLeft.ToSFML()),
+				new(topLeft.ToSFML()),
+			};
+			sceneCamera.RenderTexture.Draw(verts, PrimitiveType.LineStrip);
+		}
 		private float GetGridSpacing()
 		{
 			return MathF.Max(gridSpacing.Text.ToNumber(), 10);
@@ -159,7 +209,9 @@ namespace SMPL
 		#region Scene
 		private void OnMouseLeaveScene(object sender, EventArgs e)
 		{
+			isSelecting = false;
 			sceneMousePos.Hide();
+			SceneSelect();
 		}
 		private void OnMouseEnterScene(object sender, EventArgs e)
 		{
@@ -168,12 +220,12 @@ namespace SMPL
 		private void OnMouseMoveScene(object sender, MouseEventArgs e)
 		{
 			var sc = sceneCamera.GetPart<Area>().Scale;
-			var scale = sceneCamera.Size * sc / new Vector2(topLeftTabs.Width, topLeftTabs.Height);
+			var scale = sceneCamera.Size / new Vector2(topLeftTabs.Width, topLeftTabs.Height);
 			var pos = new Vector2(MousePosition.X, MousePosition.Y) * scale;
 			var dist = prevMousePos.DistanceBetweenPoints(pos) * sc;
 			var ang = prevMousePos.AngleBetweenPoints(pos);
 			prevMousePos = pos;
-			
+
 			if (e.Button != MouseButtons.Middle || dist == 0)
 				return;
 
@@ -190,22 +242,43 @@ namespace SMPL
 		{
 			sceneCamera.GetPart<Area>().Angle = ((float)sceneAngle.Value).Map(0, 100, 0, 360);
 		}
-		private void OnResetSceneCamera(object sender, EventArgs e)
+		private void OnMouseDownScene(object sender, MouseEventArgs e)
 		{
+			if (e.Button != MouseButtons.Left)
+				return;
+
+			isSelecting = true;
+			selectStartPos = sceneCamera.MouseCursorPosition;
+		}
+		private void OnMouseUpScene(object sender, MouseEventArgs e)
+		{
+			isSelecting = false;
+			SceneSelect();
+		}
+
+		private void OnSceneRightClickMenuResetView(object sender, EventArgs e)
+		{
+			sceneAngle.Value = 0;
+			sceneZoom.Value = 10;
 			sceneCamera.SetPart(new Area());
+			UpdateZoom();
 		}
 
 		private void UpdateZoom()
 		{
 			sceneCamera.GetPart<Area>().Scale = ((float)sceneZoom.Value).Map(0, 100, 0.3f, 10f);
 		}
-		#endregion
-		#region Output
-		private void OnOutputClear(object sender, EventArgs e)
+		private void SceneSelect()
 		{
-			log.Clear();
-			log.Text = "\n";
+			var ang = sceneCamera.GetPart<Area>().Angle;
+			var topLeft = selectStartPos;
+			var botRight = sceneCamera.MouseCursorPosition;
+			var side = topLeft.DistanceBetweenPoints(botRight) / 1.4f;
+			var topRight = topLeft.PointMoveAtAngle(ang, side, false);
+			var botLeft = topLeft.PointMoveAtAngle(ang + 90, side, false);
 		}
+		#endregion
+		#region Log
 		private void OnOutputTextChange(object sender, EventArgs e)
 		{
 			if (log.Text.Length > 0 && log.Text[0] != '\n')
@@ -225,8 +298,21 @@ namespace SMPL
 			((RichTextBox)sender).Paste(DataFormats.GetFormat("Text"));
 			e.Handled = true;
 		}
+		private void OnCommandKeyPress(object sender, PreviewKeyDownEventArgs e)
+		{
+			if (e.KeyCode == Keys.Return)
+			{
+				Command.TryExecute(command.Text.Split(' ', StringSplitOptions.RemoveEmptyEntries));
+				command.Text = "";
+			}
+		}
 
-		internal void LogToOutput(object message, Color color, bool newLine)
+		internal void ClearLog()
+		{
+			log.Clear();
+			log.Text = "\n";
+		}
+		internal void Log(object message, Color color, bool newLine)
 		{
 			if (outputActive.Checked)
 				return;

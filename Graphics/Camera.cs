@@ -18,7 +18,7 @@ namespace SMPL.Graphics
 		[JsonIgnore]
 		public Texture Texture => renderTexture.Texture;
 
-		public Vector2 Size => Resolution / GetArea().Scale;
+		public Vector2 Size => renderTexture.GetView().Size.ToSystem() / GetArea().Scale;
 		public Vector2 MouseCursorPosition
 		{
 			get { var p = Mouse.GetPosition(SMPL.scene); return PointToCamera(new(p.X, p.Y)); }
