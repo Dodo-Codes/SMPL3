@@ -97,11 +97,11 @@ namespace SMPL.Graphics
 			renderTexture.Display();
 		}
 
-		internal Vector2 PointToCamera(Vector2 worldPoint)
+		public Vector2 PointToCamera(Vector2 worldPoint)
 		{
 			return SMPL.scene.MapPixelToCoords(new((int)worldPoint.X, (int)worldPoint.Y), renderTexture.GetView()).ToSystem();
 		}
-		internal Vector2 PointToWorld(Vector2 cameraPoint)
+		public Vector2 PointToWorld(Vector2 cameraPoint)
 		{
 			var p = SMPL.scene.MapCoordsToPixel(cameraPoint.ToSFML(), renderTexture.GetView());
 			return new(p.X, p.Y);

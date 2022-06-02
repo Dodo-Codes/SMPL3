@@ -13,13 +13,13 @@
 			if (required.Contains(type) == false)
 				required.Add(type);
 		}
-		public bool Requires<T>() where T : Part
+		protected bool Requires<T>() where T : Part
 		{
 			return required.Contains(typeof(T));
 		}
 
-		public virtual void Initialize() { }
-		public virtual void Update() { }
-		public virtual void Destroy() { }
+		protected virtual void Initialize() { }
+		protected virtual void Update() { }
+		protected virtual void Destroy() { }
 	}
 }

@@ -37,11 +37,11 @@
 		private static Thread assetsLoading;
 
 		public static Camera MainCamera { get; internal set; }
-		//public static Vector2 MouseCursorPosition
-		//{
-		//	get => MainCamera.MouseCursorPosition;
-		//	set => MainCamera.MouseCursorPosition = value;
-		//}
+		public static Vector2 MouseCursorPosition
+		{
+			get => MainCamera.MouseCursorPosition;
+			set => MainCamera.MouseCursorPosition = value;
+		}
 		public static Scene CurrentScene
 		{
 			get => scene;

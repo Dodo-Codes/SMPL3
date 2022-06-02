@@ -179,28 +179,25 @@ namespace SMPL
 				return;
 
 			var ang = sceneCamera.GetPart<Area>().Angle;
-			var mousePos = sceneCamera.MouseCursorPosition;
+			var mousePos = Mouse.GetPosition(scene);
 			var topLeft = selectStartPos;
-			var botRight = mousePos;
-			var side = (botRight.X - topLeft.X) * MathF.Sin(ang) - (botRight.Y - topLeft.Y) * MathF.Cos(ang);
-			var topRight = new Vector2(topLeft.X + side * MathF.Sin(ang), topLeft.Y - side * MathF.Cos(ang));
-			var botLeft = new Vector2(botRight.X - side * MathF.Sin(ang), botRight.Y - side * MathF.Cos(ang));
-
-			//	side = (x2 - x1)*sin(angle) - (y2 - y1)*cos(angle)
-			//	x3 = x1 + side*sin(angle)
-			//	y3 = y1 - side*cos(angle)
-			//	x4 = x2 - side*sin(angle)
-			//	y4 = y2 + side*cos(angle)
+			var botRight = new Vector2(mousePos.X, mousePos.Y);
+			var topRight = new Vector2(botRight.X, topLeft.Y);
+			var botLeft = new Vector2(topLeft.X, botRight.Y);
+			var tl = sceneCamera.PointToCamera(topLeft).ToSFML();
+			var tr = sceneCamera.PointToCamera(topRight).ToSFML();
+			var br = sceneCamera.PointToCamera(botRight).ToSFML();
+			var bl = sceneCamera.PointToCamera(botLeft).ToSFML();
+			var col = new SFML.Graphics.Color(255, 255, 255, 100);
 
 			var verts = new Vertex[]
 			{
-				new(topLeft.ToSFML()),
-				new(topRight.ToSFML()),
-				new(botRight.ToSFML()),
-				new(botLeft.ToSFML()),
-				new(topLeft.ToSFML()),
+				new(tl, col),
+				new(tr, col),
+				new(br, col),
+				new(bl, col),
 			};
-			sceneCamera.RenderTexture.Draw(verts, PrimitiveType.LineStrip);
+			sceneCamera.RenderTexture.Draw(verts, PrimitiveType.Quads);
 		}
 		private float GetGridSpacing()
 		{
@@ -209,7 +206,6 @@ namespace SMPL
 		#region Scene
 		private void OnMouseLeaveScene(object sender, EventArgs e)
 		{
-			isSelecting = false;
 			sceneMousePos.Hide();
 			SceneSelect();
 		}
@@ -248,7 +244,8 @@ namespace SMPL
 				return;
 
 			isSelecting = true;
-			selectStartPos = sceneCamera.MouseCursorPosition;
+			var pos = Mouse.GetPosition(scene);
+			selectStartPos = new(pos.X, pos.Y);
 		}
 		private void OnMouseUpScene(object sender, MouseEventArgs e)
 		{
