@@ -27,6 +27,7 @@
 		public Sprite()
 		{
 			UniqueID = $"{nameof(SMPL)} {nameof(Sprite)}";
+			SetPart(new Area());
 		}
 
 		protected override void OnDraw()

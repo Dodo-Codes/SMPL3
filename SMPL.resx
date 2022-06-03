@@ -78,7 +78,7 @@
     <value>470, 20</value>
   </metadata>
   <data name="spriteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>104, 22</value>
   </data>
   <data name="spriteToolStripMenuItem.Text" xml:space="preserve">
     <value>Sprite</value>

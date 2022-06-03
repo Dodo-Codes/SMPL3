@@ -20,7 +20,7 @@
 				var freeUID = value;
 				var objsUID = Scene.CurrentScene.objsUID;
 
-				while(objsUID.ContainsKey(value))
+				while(objsUID.ContainsKey(freeUID))
 				{
 					freeUID = $"{value}{i}";
 					i++;

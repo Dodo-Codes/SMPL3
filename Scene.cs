@@ -75,7 +75,7 @@
 
 		protected virtual AssetQueue OnRequireAssets() => default;
 		protected virtual void OnStart() { }
-		protected virtual void OnUpdate() => UpdateAndDrawEverything();
+		protected virtual void OnUpdate() { }
 		protected virtual void OnStop() { }
 		protected virtual void OnGameStop() { }
 
@@ -180,12 +180,14 @@
 			}
 		}
 		internal void GameStop() => OnGameStop();
-		internal void UpdateAndDrawEverything()
+		internal void UpdateObjs()
 		{
 			foreach(var kvp in objsOrder)
 				for(int i = 0; i < kvp.Value.Count; i++)
 					kvp.Value[i].Update();
-
+		}
+		internal void DrawObjs()
+		{
 			foreach(var kvp in objsDepth)
 				for(int i = 0; i < kvp.Value.Count; i++)
 					kvp.Value[i].Draw();

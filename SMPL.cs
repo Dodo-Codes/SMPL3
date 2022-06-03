@@ -20,7 +20,7 @@ namespace SMPL
 		internal static RenderWindow scene, game;
 
 		private bool isSelecting;
-		private Vector2 prevMousePos, selectStartPos;
+		private Vector2 prevMousePos, selectStartPos, rightClickPos;
 		private readonly System.Windows.Forms.Timer loop;
 		private readonly Camera sceneCamera;
 
@@ -78,8 +78,6 @@ namespace SMPL
 				camera.Fill();
 				camera.Update();
 
-				Scene.UpdateCurrentScene();
-
 				if(camera == sceneCamera)
 				{
 					var view = camera.RenderTexture.GetView();
@@ -90,13 +88,20 @@ namespace SMPL
 					TryDrawGrid();
 					TryShowMousePos();
 
-					var prevMain = Scene.MainCamera;
+					var prevMainCam = Scene.MainCamera;
 					Scene.MainCamera = camera;
-					Scene.CurrentScene.UpdateAndDrawEverything();
-					Scene.MainCamera = prevMain;
+					Scene.CurrentScene.DrawObjs();
+					Scene.MainCamera = prevMainCam;
 
 					TryDrawSelection();
 				}
+				else
+				{
+					Scene.UpdateCurrentScene();
+					Scene.CurrentScene.UpdateObjs();
+					Scene.CurrentScene.DrawObjs();
+				}
+
 				camera.DrawToWindow(window);
 				window.Display();
 			}
@@ -252,6 +257,9 @@ namespace SMPL
 		}
 		private void OnMouseUpScene(object sender, MouseEventArgs e)
 		{
+			if(e.Button == MouseButtons.Right)
+				rightClickPos = sceneCamera.MouseCursorPosition;
+
 			if(e.Button != MouseButtons.Left && e.Button != MouseButtons.Right)
 				return;
 
@@ -282,7 +290,8 @@ namespace SMPL
 		}
 		private void OnSceneRightClickMenuCreateSprite(object sender, EventArgs e)
 		{
-			new Sprite();
+			var spr = new Sprite();
+			spr.GetPart<Area>().Position = rightClickPos;
 		}
 		#endregion
 
