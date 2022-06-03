@@ -1,12 +1,4 @@
-﻿using SFML.Graphics;
-using System.Numerics;
-using System;
-using SFML.System;
-using SFML.Window;
-using SMPL.Graphics;
-using SMPL.Tools;
-
-namespace SMPL.Graphics
+﻿namespace SMPL.Graphics
 {
 	public class Camera : BaseObject
 	{
@@ -26,25 +18,17 @@ namespace SMPL.Graphics
 		}
 
 		public Vector2 CornerA
-		{
-			get => GetArea().GetPositionFromSelf(new(
-				-renderTexture.GetView().Size.X * 0.5f, -renderTexture.GetView().Size.Y * 0.5f));
-		}
+			=> GetArea().GetPositionFromSelf(
+				new(-renderTexture.GetView().Size.X * 0.5f, -renderTexture.GetView().Size.Y * 0.5f));
 		public Vector2 CornerB
-		{
-			get => GetArea().GetPositionFromSelf(new(
+			=> GetArea().GetPositionFromSelf(new(
 				renderTexture.GetView().Size.X * 0.5f, -renderTexture.GetView().Size.Y * 0.5f));
-		}
 		public Vector2 CornerC
-		{
-			get => GetArea().GetPositionFromSelf(new(
+			=> GetArea().GetPositionFromSelf(new(
 				renderTexture.GetView().Size.X * 0.5f, renderTexture.GetView().Size.Y * 0.5f));
-		}
 		public Vector2 CornerD
-		{
-			get => GetArea().GetPositionFromSelf(new(
+			=> GetArea().GetPositionFromSelf(new(
 				-renderTexture.GetView().Size.X * 0.5f, renderTexture.GetView().Size.Y * 0.5f));
-		}
 
 		public Camera(Vector2 resolution)
 		{
@@ -59,23 +43,25 @@ namespace SMPL.Graphics
 		{
 			renderTexture.Dispose();
 		}
-		//public bool Captures(Hitbox hitbox)
-		//{
-		//	var screen = new Hitbox(CornerA, CornerB, CornerC, CornerD, CornerA);
-		//	return screen.ConvexContains(hitbox);
-		//}
-		//public bool Captures(Vector2 point)
-		//{
-		//	var screen = new Hitbox(CornerA, CornerB, CornerC, CornerD, CornerA);
-		//	return screen.ConvexContains(point);
-		//}
+		public bool Captures(Hitbox hitbox)
+		{
+			var screen = new Hitbox();
+			screen.AddLineSegment(CornerA, CornerB, CornerC, CornerD, CornerA);
+			return screen.ConvexContains(hitbox);
+		}
+		public bool Captures(Vector2 point)
+		{
+			var screen = new Hitbox();
+			screen.AddLineSegment(CornerA, CornerB, CornerC, CornerD, CornerA);
+			return screen.ConvexContains(point);
+		}
 		public void Snap(string imagePath)
 		{
 			var img = Texture.CopyToImage();
 			var result = img.SaveToFile(imagePath);
 			img.Dispose();
 
-			if (result == false)
+			if(result == false)
 				Debug.LogError(1, $"Could not save the image at '{imagePath}'.");
 		}
 		public void Fill(SFML.Graphics.Color color = default)
@@ -135,7 +121,7 @@ namespace SMPL.Graphics
 
 		private Area GetArea()
 		{
-			if (HasPart<Area>() == false)
+			if(HasPart<Area>() == false)
 				SetPart(new Area());
 
 			return GetPart<Area>();

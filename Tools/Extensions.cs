@@ -59,8 +59,8 @@ namespace SMPL.Tools
 		/// </summary>
 		public static bool Once(this bool condition, string uniqueID, uint max = uint.MaxValue)
 		{
-			if (gates.ContainsKey(uniqueID) == false && condition == false) return false;
-			else if (gates.ContainsKey(uniqueID) == false && condition == true)
+			if(gates.ContainsKey(uniqueID) == false && condition == false) return false;
+			else if(gates.ContainsKey(uniqueID) == false && condition == true)
 			{
 				gates[uniqueID] = true;
 				gateEntries[uniqueID] = 1;
@@ -68,14 +68,14 @@ namespace SMPL.Tools
 			}
 			else
 			{
-				if (gates[uniqueID] == true && condition == true) return false;
-				else if (gates[uniqueID] == false && condition == true)
+				if(gates[uniqueID] == true && condition == true) return false;
+				else if(gates[uniqueID] == false && condition == true)
 				{
 					gates[uniqueID] = true;
 					gateEntries[uniqueID]++;
 					return true;
 				}
-				else if (gateEntries[uniqueID] < max) gates[uniqueID] = false;
+				else if(gateEntries[uniqueID] < max) gates[uniqueID] = false;
 			}
 			return false;
 		}
@@ -102,7 +102,7 @@ namespace SMPL.Tools
 		public static void Shuffle<T>(this List<T> list)
 		{
 			var n = list.Count;
-			while (n > 1)
+			while(n > 1)
 			{
 				n--;
 				var k = new Random().Next(n + 1);
@@ -117,7 +117,7 @@ namespace SMPL.Tools
 		public static float Average(this List<float> list)
 		{
 			var sum = 0f;
-			for (int i = 0; i < list.Count; i++)
+			for(int i = 0; i < list.Count; i++)
 				sum += list[i];
 			return sum / list.Count;
 		}
@@ -134,10 +134,10 @@ namespace SMPL.Tools
 		/// </summary>
 		public static bool IsLetters(this string text)
 		{
-			for (int i = 0; i < text.Length; i++)
+			for(int i = 0; i < text.Length; i++)
 			{
 				var isLetter = (text[i] >= 'A' && text[i] <= 'Z') || (text[i] >= 'a' && text[i] <= 'z');
-				if (isLetter == false)
+				if(isLetter == false)
 					return false;
 			}
 			return true;
@@ -157,7 +157,7 @@ namespace SMPL.Tools
 		{
 			var result = "";
 			times = times.Limit(0, 999999);
-			for (int i = 0; i < times; i++)
+			for(int i = 0; i < times; i++)
 				result = $"{result}{text}";
 			return result;
 		}
@@ -169,7 +169,7 @@ namespace SMPL.Tools
 		{
 			var buffer = Encoding.UTF8.GetBytes(text);
 			var memoryStream = new MemoryStream();
-			using (var gZipStream = new GZipStream(memoryStream, CompressionMode.Compress, true))
+			using(var gZipStream = new GZipStream(memoryStream, CompressionMode.Compress, true))
 				gZipStream.Write(buffer, 0, buffer.Length);
 
 			memoryStream.Position = 0;
@@ -195,7 +195,7 @@ namespace SMPL.Tools
 			var buffer = new byte[dataLength];
 
 			memoryStream.Position = 0;
-			using (var gZipStream = new GZipStream(memoryStream, CompressionMode.Decompress))
+			using(var gZipStream = new GZipStream(memoryStream, CompressionMode.Decompress))
 				gZipStream.Read(buffer, 0, buffer.Length);
 
 			return Encoding.UTF8.GetString(buffer);
@@ -237,7 +237,7 @@ namespace SMPL.Tools
 		{
 			var result = 0f;
 			var x = progress.Limit(0, 1, repeated ? Limitation.Overflow : Limitation.ClosestBound);
-			switch (animationType)
+			switch(animationType)
 			{
 				case Animations.BendWeak:
 					{
@@ -313,18 +313,18 @@ namespace SMPL.Tools
 		public static float Limit(this float number, float rangeA, float rangeB,
 			Limitation limitation = Limitation.ClosestBound)
 		{
-			if (rangeA > rangeB)
+			if(rangeA > rangeB)
 				Swap(ref rangeA, ref rangeB);
 
-			if (limitation == Limitation.ClosestBound)
+			if(limitation == Limitation.ClosestBound)
 			{
-				if (number < rangeA)
+				if(number < rangeA)
 					return rangeA;
-				else if (number > rangeB)
+				else if(number > rangeB)
 					return rangeB;
 				return number;
 			}
-			else if (limitation == Limitation.Overflow)
+			else if(limitation == Limitation.Overflow)
 			{
 				var d = rangeB - rangeA;
 				return ((number - rangeA) % d + d) % d + rangeA;
@@ -356,11 +356,11 @@ namespace SMPL.Tools
 		{
 			precision = (int)precision.Limit(0, 5);
 
-			if (toward == RoundWay.Down || toward == RoundWay.Up)
+			if(toward == RoundWay.Down || toward == RoundWay.Up)
 			{
 				var numStr = number.ToString();
 				var prec = Precision(number);
-				if (prec > 0 && prec > precision)
+				if(prec > 0 && prec > precision)
 				{
 					var digit = toward == RoundWay.Down ? "1" : "9";
 					numStr = numStr.Remove(numStr.Length - 1);
@@ -406,7 +406,7 @@ namespace SMPL.Tools
 		public static bool IsBetween(this float number, float rangeA, float rangeB,
 			bool inclusiveA = false, bool inclusiveB = false)
 		{
-			if (rangeA > rangeB)
+			if(rangeA > rangeB)
 				Swap(ref rangeA, ref rangeB);
 			var l = inclusiveA ? rangeA <= number : rangeA < number;
 			var u = inclusiveB ? rangeB >= number : rangeB > number;
@@ -418,7 +418,7 @@ namespace SMPL.Tools
 		/// </summary>
 		public static float Move(this float number, float speed, bool fpsDependent = true)
 		{
-			if (fpsDependent)
+			if(fpsDependent)
 				speed *= Time.Delta;
 			return number + speed;
 		}
@@ -433,9 +433,9 @@ namespace SMPL.Tools
 			var goingPos = number < targetNumber;
 			var result = Move(number, goingPos ? Sign(speed, false) : Sign(speed, true), fpsDependent);
 
-			if (goingPos && result > targetNumber)
+			if(goingPos && result > targetNumber)
 				return targetNumber;
-			else if (goingPos == false && result < targetNumber)
+			else if(goingPos == false && result < targetNumber)
 				return targetNumber;
 			return result;
 		}
@@ -465,16 +465,16 @@ namespace SMPL.Tools
 			// stops the rotation with an else when close enough
 			// prevents the rotation from staying behind after the stop
 			var checkedSpeed = speed;
-			if (fpsDependent) checkedSpeed *= Time.Delta;
-			if (Math.Abs(difference) < checkedSpeed) angle = targetAngle;
-			else if (difference >= 0 && difference < 180) angle = Move(angle, -speed, fpsDependent);
-			else if (difference >= -180 && difference < 0) angle = Move(angle, speed, fpsDependent);
-			else if (difference >= -360 && difference < -180) angle = Move(angle, -speed, fpsDependent);
-			else if (difference >= 180 && difference < 360) angle = Move(angle, speed, fpsDependent);
+			if(fpsDependent) checkedSpeed *= Time.Delta;
+			if(Math.Abs(difference) < checkedSpeed) angle = targetAngle;
+			else if(difference >= 0 && difference < 180) angle = Move(angle, -speed, fpsDependent);
+			else if(difference >= -180 && difference < 0) angle = Move(angle, speed, fpsDependent);
+			else if(difference >= -360 && difference < -180) angle = Move(angle, -speed, fpsDependent);
+			else if(difference >= 180 && difference < 360) angle = Move(angle, speed, fpsDependent);
 
 			// detects speed greater than possible
 			// prevents jiggle when passing 0-360 & 360-0 | simple to fix yet took me half a day
-			if (Math.Abs(difference) > 360 - checkedSpeed) angle = targetAngle;
+			if(Math.Abs(difference) > 360 - checkedSpeed) angle = targetAngle;
 
 			return angle;
 		}
@@ -484,7 +484,7 @@ namespace SMPL.Tools
 		/// </summary>
 		public static float Random(this float rangeA, float rangeB, float precision = 0, float seed = float.NaN)
 		{
-			if (rangeA > rangeB)
+			if(rangeA > rangeB)
 				Swap(ref rangeA, ref rangeB);
 
 			precision = (int)precision.Limit(0, 5);
@@ -540,12 +540,12 @@ namespace SMPL.Tools
 		/// </summary>
 		public static string SecondsToText(this float seconds, Time.Format format = new())
 		{
-			if (float.IsNaN(seconds) || float.IsInfinity(seconds))
+			if(float.IsNaN(seconds) || float.IsInfinity(seconds))
 				return null;
 
 			seconds = seconds.Sign(false);
 			var ms = 0;
-			if (seconds.ToString().Contains('.'))
+			if(seconds.ToString().Contains('.'))
 			{
 				var spl = seconds.ToString().Split('.');
 				ms = int.Parse(spl[1]) * 100;
@@ -728,23 +728,24 @@ namespace SMPL.Tools
 		/// <paramref name="camera"/> is passed. The default <paramref name="color"/> is assumed to be white if no
 		/// <paramref name="color"/> is passed.
 		/// </summary>
-		public static void DrawPoint(this Vector2 point, Camera camera = default, SFML.Graphics.Color color = default, float size = 4)
+		public static void DrawPoint(this Vector2 point, Camera camera = default, Color color = default, float size = 4)
 		{
 			camera ??= Scene.MainCamera;
-			color = color == default ? SFML.Graphics.Color.White : color;
+			color = color == default ? Color.White : color;
 
 			size /= 2;
 			var tl = point.PointMoveAtAngle(270, size, false).PointMoveAtAngle(180, size, false);
 			var tr = point.PointMoveAtAngle(270, size, false).PointMoveAtAngle(0, size, false);
 			var br = point.PointMoveAtAngle(90, size, false).PointMoveAtAngle(0, size, false);
 			var bl = point.PointMoveAtAngle(90, size, false).PointMoveAtAngle(180, size, false);
+			var c = color.ToSFML();
 
 			var vert = new Vertex[]
 			{
-				new(new(tl.X, tl.Y), color),
-				new(new(tr.X, tr.Y), color),
-				new(new(br.X, br.Y), color),
-				new(new(bl.X, bl.Y), color),
+				new(new(tl.X, tl.Y), c),
+				new(new(tr.X, tr.Y), c),
+				new(new(br.X, br.Y), c),
+				new(new(bl.X, bl.Y), c),
 			};
 			camera.renderTexture.Draw(vert, PrimitiveType.Quads);
 		}
@@ -769,25 +770,25 @@ namespace SMPL.Tools
 		public static List<Vector2> OutlinePoints(this ICollection<Vector2> points)
 		{
 			var result = new List<Vector2>();
-			foreach (var p in points)
+			foreach(var p in points)
 			{
-				if (result.Count == 0)
+				if(result.Count == 0)
 					result.Add(p);
 				else
 				{
-					if (result[0].X > p.X)
+					if(result[0].X > p.X)
 						result[0] = p;
-					else if (result[0].X == p.X)
-						if (result[0].Y > p.Y)
+					else if(result[0].X == p.X)
+						if(result[0].Y > p.Y)
 							result[0] = p;
 				}
 			}
 			var counter = 0;
-			while (counter < result.Count)
+			while(counter < result.Count)
 			{
 				var q = Next(points, result[counter]);
 				result.Add(q);
-				if (q == result[0] || result.Count > points.Count)
+				if(q == result[0] || result.Count > points.Count)
 					break;
 				counter++;
 
@@ -795,10 +796,10 @@ namespace SMPL.Tools
 				{
 					Vector2 q = p;
 					int t;
-					foreach (Vector2 r in points)
+					foreach(Vector2 r in points)
 					{
 						t = ((q.X - p.X) * (r.Y - p.Y) - (r.X - p.X) * (q.Y - p.Y)).CompareTo(0);
-						if (t == -1 || t == 0 && Vector2.Distance(p, r) > Vector2.Distance(p, q))
+						if(t == -1 || t == 0 && Vector2.Distance(p, r) > Vector2.Distance(p, q))
 							q = r;
 					}
 					return q;
@@ -806,6 +807,20 @@ namespace SMPL.Tools
 			}
 			result.Add(result[0]);
 			return result;
+		}
+		/// <summary>
+		/// Converts a <see cref="SFML.Graphics.Color"/> into a <see cref="Color"/> and returns the result.
+		/// </summary>
+		public static Color ToSystem(this SFML.Graphics.Color color)
+		{
+			return Color.FromArgb(color.A, color.R, color.G, color.B);
+		}
+		/// <summary>
+		/// Converts a <see cref="SColor"/> into a <see cref="FML.Graphics.Color"/> and returns the result.
+		/// </summary>
+		public static SFML.Graphics.Color ToSFML(this Color color)
+		{
+			return new(color.R, color.G, color.B, color.A);
 		}
 
 		/// <summary>

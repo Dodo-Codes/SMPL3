@@ -8,18 +8,33 @@
 
 		protected void AddRequirement<T>() where T : Part
 		{
-			var type = typeof(T);
-
-			if (required.Contains(type) == false)
-				required.Add(type);
+			Add(typeof(T));
 		}
+		protected void AddRequirement(Part partType)
+		{
+			Add(partType.GetType());
+		}
+		private void Add(Type partType)
+		{
+			if (required.Contains(partType) == false)
+				required.Add(partType);
+		}
+
 		protected bool Requires<T>() where T : Part
 		{
 			return required.Contains(typeof(T));
 		}
+		protected bool Requires(Type partType)
+		{
+			return required.Contains(partType);
+		}
 
-		protected virtual void Initialize() { }
-		protected virtual void Update() { }
-		protected virtual void Destroy() { }
+		protected virtual void OnCreate() { }
+		protected virtual void OnUpdate() { }
+		protected virtual void OnDestroy() { }
+
+		internal void Initialize() => OnCreate();
+		internal void Update() => OnUpdate();
+		internal void Destroy() => OnDestroy();
 	}
 }

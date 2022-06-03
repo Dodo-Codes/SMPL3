@@ -78,7 +78,7 @@ namespace SMPL.Parts
 			return GetPosition(m * GetParentMatrix());
 		}
 
-		public override void Initialize()
+		protected override void OnCreate()
 		{
 			LocalScale = 1;
 		}

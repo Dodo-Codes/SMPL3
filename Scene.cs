@@ -47,9 +47,9 @@
 			get => scene;
 			set
 			{
-				if (value == null)
+				if(value == null)
 				{
-					//Game.Stop();
+					SMPL.StopGame();
 					return;
 				}
 				unloadScene = scene;
@@ -69,10 +69,13 @@
 		//public Dictionary<string, Sprite3D> Sprites3D { get; } = new();
 		public Dictionary<string, Shader> Shaders { get; } = new();
 		//public Dictionary<string, Database> Databases { get; } = new();
+		internal readonly SortedDictionary<int, List<Visual>> objsDepth = new();
+		internal readonly SortedDictionary<int, List<BaseObject>> objsOrder = new();
+		internal readonly Dictionary<string, BaseObject> objsUID = new();
 
 		protected virtual AssetQueue OnRequireAssets() => default;
 		protected virtual void OnStart() { }
-		protected virtual void OnUpdate() { }
+		protected virtual void OnUpdate() => UpdateAndDrawEverything();
 		protected virtual void OnStop() { }
 		protected virtual void OnGameStop() { }
 
@@ -81,16 +84,16 @@
 			var assets = OnRequireAssets();
 			var loadedCount = 0;
 
-			if (assets.Textures == null && assets.Sounds == null && assets.Music == null &&
+			if(assets.Textures == null && assets.Sounds == null && assets.Music == null &&
 				assets.Fonts == null && assets.TexturedModels3D == null)
 			{
 				CurrentScene.LoadingPercent = 100;
 				return;
 			}
 
-			for (int i = 0; i < assets.Textures?.Count; i++)
+			for(int i = 0; i < assets.Textures?.Count; i++)
 			{
-				if (assets.Textures[i] != null)
+				if(assets.Textures[i] != null)
 				{
 					try
 					{
@@ -98,37 +101,37 @@
 						Textures[assets.Textures[i]] = t;
 						t.Repeated = true;
 					}
-					catch (Exception)
+					catch(Exception)
 					{ Textures[assets.Textures[i]] = null; Debug.LogError(-1, $"Could not load texture '{assets.Textures[i]}'."); }
 				}
 				UpdateLoadingPercent();
 			}
-			for (int i = 0; i < assets.Sounds?.Count; i++)
+			for(int i = 0; i < assets.Sounds?.Count; i++)
 			{
-				if (assets.Sounds[i] != null)
+				if(assets.Sounds[i] != null)
 				{
 					try { Sounds[assets.Sounds[i]] = new Sound(new SoundBuffer(assets.Sounds[i])); }
-					catch (Exception)
+					catch(Exception)
 					{ Sounds[assets.Sounds[i]] = null; Debug.LogError(-1, $"Could not load sound '{assets.Sounds[i]}'."); }
 				}
 				UpdateLoadingPercent();
 			}
-			for (int i = 0; i < assets.Music?.Count; i++)
+			for(int i = 0; i < assets.Music?.Count; i++)
 			{
-				if (assets.Music[i] != null)
+				if(assets.Music[i] != null)
 				{
 					try { Music[assets.Music[i]] = new Music(assets.Music[i]); }
-					catch (Exception)
+					catch(Exception)
 					{ Music[assets.Music[i]] = null; Debug.LogError(-1, $"Could not load music '{assets.Music[i]}'."); }
 				}
 				UpdateLoadingPercent();
 			}
-			for (int i = 0; i < assets.Fonts?.Count; i++)
+			for(int i = 0; i < assets.Fonts?.Count; i++)
 			{
-				if (assets.Fonts[i] != null)
+				if(assets.Fonts[i] != null)
 				{
 					try { Fonts[assets.Fonts[i]] = new SFML.Graphics.Font(assets.Fonts[i]); }
-					catch (Exception)
+					catch(Exception)
 					{ Fonts[assets.Fonts[i]] = null; Debug.LogError(-1, $"Could not load font '{assets.Fonts[i]}'."); }
 				}
 				UpdateLoadingPercent();
@@ -170,13 +173,23 @@
 
 			void DisposeAndClear<T>(Dictionary<string, T> assets) where T : IDisposable
 			{
-				foreach (var kvp in assets)
+				foreach(var kvp in assets)
 					kvp.Value.Dispose();
 
 				assets.Clear();
 			}
 		}
 		internal void GameStop() => OnGameStop();
+		internal void UpdateAndDrawEverything()
+		{
+			foreach(var kvp in objsOrder)
+				for(int i = 0; i < kvp.Value.Count; i++)
+					kvp.Value[i].Update();
+
+			foreach(var kvp in objsDepth)
+				for(int i = 0; i < kvp.Value.Count; i++)
+					kvp.Value[i].Draw();
+		}
 
 		internal static void Init(Scene startingScene, Scene loadingScene)
 		{
@@ -188,34 +201,34 @@
 		}
 		internal static void UpdateCurrentScene()
 		{
-			if (stopScene != null)
+			if(stopScene != null)
 			{
 				stopScene = null;
 				CurrentScene?.OnStop();
 			}
-			if (startScene != null)
+			if(startScene != null)
 			{
 				LoadingScene?.OnStop();
 				startScene = null;
 				CurrentScene?.OnStart();
 			}
-			if (CurrentScene?.LoadingPercent < 100)
+			if(CurrentScene?.LoadingPercent < 100)
 				LoadingScene?.OnUpdate();
 			else
 				CurrentScene?.OnUpdate();
 		}
 		internal static void ThreadLoadAssets()
 		{
-			while (true)
+			while(true)
 			{
 				Thread.Sleep(1);
-				if (unloadScene != null)
+				if(unloadScene != null)
 				{
 					scene.UnloadAssets();
 					stopScene = unloadScene;
 					unloadScene = null;
 				}
-				if (loadScene != null)
+				if(loadScene != null)
 				{
 					scene.LoadAssets();
 					startScene = loadScene;

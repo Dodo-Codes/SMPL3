@@ -6,8 +6,9 @@
 
 		static Command()
 		{
-			AddCommand<CommandHelp>();
+			AddCommand<CommandCommands>();
 			AddCommand<CommandClear>();
+			AddCommand<CommandHotkeys>();
 
 			void AddCommand<T>() where T : Command
 			{
@@ -41,14 +42,15 @@
 			cmd.Execute(args);
 		}
 	}
-	public class CommandHelp : Command
+	public class CommandCommands : Command
 	{
-		public override string GetName() => "help";
+		public override string GetName() => "commands";
 		public override string GetDescription() => "Display all commands.";
 		public override int GetParameterCount() => 0;
 		public override void Execute(string[] parameters)
 		{
-			Debug.Log("Commands:", Color.White);
+			Debug.Log("");
+			Debug.Log("Commands:");
 			foreach (var kvp in commands)
 			{
 				var cmd = kvp.Value;
@@ -65,5 +67,23 @@
 		public override string GetDescription() => "Clear the log.";
 		public override int GetParameterCount() => 0;
 		public override void Execute(string[] parameters) => SMPL.instance.ClearLog();
+	}
+	public class CommandHotkeys : Command
+	{
+		public override string GetName() => "hotkeys";
+		public override string GetDescription() => "Display all hotkeys.";
+		public override int GetParameterCount() => 0;
+		public override void Execute(string[] parameters)
+		{
+			var hotkeys = Hotkey.hotkeys;
+			Debug.Log("");
+			Debug.Log("Hotkeys:");
+			for (int i = 0; i < hotkeys.Count; i++)
+			{
+				var hotkey = hotkeys[i];
+				Debug.Log(hotkey.GetName(), Color.Lime, false);
+				Debug.Log($" - {hotkey.GetDescription()}", Color.Gray);
+			}
+		}
 	}
 }

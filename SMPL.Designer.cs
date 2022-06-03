@@ -110,6 +110,7 @@
 			resources.ApplyResources(this.topLeftTabs, "topLeftTabs");
 			this.topLeftTabs.Name = "topLeftTabs";
 			this.topLeftTabs.SelectedIndex = 0;
+			this.topLeftTabs.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnKeyDownTopLeftTabs);
 			// 
 			// sceneTab
 			// 
@@ -148,6 +149,7 @@
 			// 
 			this.spriteToolStripMenuItem.Name = "spriteToolStripMenuItem";
 			resources.ApplyResources(this.spriteToolStripMenuItem, "spriteToolStripMenuItem");
+			this.spriteToolStripMenuItem.Click += new System.EventHandler(this.OnSceneRightClickMenuCreateSprite);
 			// 
 			// sceneRightClickSeparator1
 			// 
@@ -189,6 +191,7 @@
 			this.sceneStatus.Controls.Add(this.groupBoxGrid);
 			resources.ApplyResources(this.sceneStatus, "sceneStatus");
 			this.sceneStatus.Name = "sceneStatus";
+			this.sceneStatus.Click += new System.EventHandler(this.OnSceneStatusClick);
 			// 
 			// groupBoxGrid
 			// 
@@ -207,6 +210,7 @@
 			this.gridSpacing.Name = "gridSpacing";
 			this.toolTipGridSpacing.SetToolTip(this.gridSpacing, resources.GetString("gridSpacing.ToolTip"));
 			this.gridSpacing.ValidatingType = typeof(int);
+			this.gridSpacing.TextChanged += new System.EventHandler(this.OnGridSpacingChange);
 			// 
 			// gridThickness
 			// 

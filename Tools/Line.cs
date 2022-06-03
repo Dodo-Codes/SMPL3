@@ -41,23 +41,24 @@
 		/// <paramref name="camera"/> is passed. The default <paramref name="color"/> is assumed to be white if no
 		/// <paramref name="color"/> is passed.
 		/// </summary>
-		public void Draw(Camera camera = default, SFML.Graphics.Color color = default, float width = 4)
+		public void Draw(Camera camera = default, Color color = default, float width = 4)
 		{
 			camera ??= Scene.MainCamera;
-			color = color == default ? SFML.Graphics.Color.White : color;
+			color = color == default ? Color.White : color;
 
 			width /= 2;
 			var startLeft = A.PointMoveAtAngle(Angle - 90, width, false);
 			var startRight = A.PointMoveAtAngle(Angle + 90, width, false);
 			var endLeft = B.PointMoveAtAngle(Angle - 90, width, false);
 			var endRight = B.PointMoveAtAngle(Angle + 90, width, false);
+			var c = color.ToSFML();
 
 			var vert = new Vertex[]
 			{
-				new(new(startLeft.X, startLeft.Y), color),
-				new(new(startRight.X, startRight.Y), color),
-				new(new(endRight.X, endRight.Y), color),
-				new(new(endLeft.X, endLeft.Y), color),
+				new(new(startLeft.X, startLeft.Y), c),
+				new(new(startRight.X, startRight.Y), c),
+				new(new(endRight.X, endRight.Y), c),
+				new(new(endLeft.X, endLeft.Y), c),
 			};
 			camera.renderTexture.Draw(vert, PrimitiveType.Quads);
 		}
@@ -105,29 +106,29 @@
 		/// </summary>
 		public Vector2 GetPathfindResult(uint tries, Hitbox hitbox)
 		{
-			if (tries == 0)
+			if(tries == 0)
 				return new Vector2().NaN();
 
-			if (IsCrossing(A, B, B) == false)
+			if(IsCrossing(A, B, B) == false)
 				return B;
 
 			var bestPoint = new Vector2().NaN();
 			var bestDist = double.MaxValue;
-			for (int i = 0; i < tries; i++)
+			for(int i = 0; i < tries; i++)
 			{
 				var randPoint = A.PointMoveAtAngle(i * (360 / tries), Vector2.Distance(A, B), false);
 				var sumDist = Vector2.Distance(A, randPoint) + Vector2.Distance(randPoint, B);
-				if (IsCrossing(A, randPoint, B) == false && sumDist < bestDist)
+				if(IsCrossing(A, randPoint, B) == false && sumDist < bestDist)
 				{
 					bestDist = sumDist;
 					bestPoint = randPoint;
 				}
 			}
 
-			for (int i = 0; i < tries; i++)
+			for(int i = 0; i < tries; i++)
 			{
 				var curP = A.PointPercentTowardPoint(bestPoint, new(100 / tries * i, 100 / tries * i));
-				if (IsCrossing(curP, B, B) == false)
+				if(IsCrossing(curP, B, B) == false)
 					return curP;
 			}
 
@@ -135,11 +136,11 @@
 
 			bool IsCrossing(Vector2 p1, Vector2 p2, Vector2 p3)
 			{
-				for (int i = 0; i < hitbox.Lines.Count; i++)
+				for(int i = 0; i < hitbox.Lines.Count; i++)
 				{
 					var cross1 = hitbox.Lines[i].Crosses(new(p1, p2));
 					var cross2 = hitbox.Lines[i].Crosses(new(p2, p3));
-					if (cross1 || cross2)
+					if(cross1 || cross2)
 						return true;
 				}
 				return false;
@@ -172,7 +173,7 @@
 			var c2 = a2 * (C.X) + b2 * (C.Y);
 			var determinant = a1 * b2 - a2 * b1;
 
-			if (determinant == 0)
+			if(determinant == 0)
 				return new Vector2(float.NaN, float.NaN);
 			else
 			{

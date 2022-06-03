@@ -78,7 +78,7 @@
     <value>470, 20</value>
   </metadata>
   <data name="spriteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="spriteToolStripMenuItem.Text" xml:space="preserve">
     <value>Sprite</value>
@@ -508,8 +508,7 @@
   <data name="log.Text" xml:space="preserve">
     <value>
 Welcome to SMPL!
-Type 'help' in the box above to see all commands.
-
+Type 'commands' in the box above to see all commands.
 </value>
   </data>
   <data name="&gt;&gt;log.Name" xml:space="preserve">

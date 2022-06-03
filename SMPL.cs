@@ -1,14 +1,16 @@
-global using Color = System.Drawing.Color;
+global using System.Collections.ObjectModel;
 global using System.Numerics;
 global using Newtonsoft.Json;
-global using SFML.Graphics;
 global using SFML.Audio;
+global using SFML.Graphics;
 global using SFML.System;
 global using SFML.Window;
-global using SMPL.Parts;
-global using SMPL.Graphics;
 global using SMPL.Commands;
+global using SMPL.Graphics;
+global using SMPL.Parts;
 global using SMPL.Tools;
+global using Sprite = SMPL.Graphics.Sprite;
+global using Color = System.Drawing.Color;
 
 namespace SMPL
 {
@@ -27,7 +29,7 @@ namespace SMPL
 			InitializeComponent();
 			instance = this;
 
-			//Scene.Init(startingScene, loadingScene);
+			Scene.Init(new(), null);
 			var sz = new Vector2(1920, 1080);//Settings.ScreenResolution;
 			Scene.MainCamera = new(sz);
 			sceneCamera = new(sz);
@@ -50,17 +52,22 @@ namespace SMPL
 				window.SetView(view);
 			}
 		}
+		public static void StopGame()
+		{
+			Scene.CurrentScene?.GameStop();
+			game.Close();
+		}
 
 		private void OnUpdate(object sender, EventArgs e)
 		{
 			Tools.Time.Update();
 
-			if (topLeftTabs.SelectedIndex == 0)
+			if(topLeftTabs.SelectedIndex == 0)
 				ProcessCamera(sceneCamera, scene);
 			else
 				ProcessCamera(Scene.MainCamera, game);
 
-			if (log.SelectionStart == 0)
+			if(log.SelectionStart == 0)
 				log.SelectionStart = 1;
 
 			void ProcessCamera(Camera camera, RenderWindow window)
@@ -71,9 +78,9 @@ namespace SMPL
 				camera.Fill();
 				camera.Update();
 
-				if (camera == Scene.MainCamera)
-					Scene.UpdateCurrentScene();
-				else
+				Scene.UpdateCurrentScene();
+
+				if(camera == sceneCamera)
 				{
 					var view = camera.RenderTexture.GetView();
 					var sc = camera.GetPart<Area>().Scale;
@@ -81,18 +88,22 @@ namespace SMPL
 					camera.RenderTexture.SetView(view);
 
 					TryDrawGrid();
-					TryDrawSelection();
 					TryShowMousePos();
+
+					var prevMain = Scene.MainCamera;
+					Scene.MainCamera = camera;
+					Scene.CurrentScene.UpdateAndDrawEverything();
+					Scene.MainCamera = prevMain;
+
+					TryDrawSelection();
 				}
-
 				camera.DrawToWindow(window);
-
 				window.Display();
 			}
 		}
 		private void TryDrawGrid()
 		{
-			if (gridThickness.Value == gridThickness.Minimum)
+			if(gridThickness.Value == gridThickness.Minimum)
 				return;
 
 			var cellVerts = new VertexArray(PrimitiveType.Quads);
@@ -106,7 +117,7 @@ namespace SMPL
 			thickness *= sc;
 			thickness *= 0.5f;
 
-			for (float i = 0; i <= sz.X * 4; i += spacing)
+			for(float i = 0; i <= sz.X * 4; i += spacing)
 			{
 				var x = area.Position.X - sz.X * 2 + i;
 				var y = area.Position.Y;
@@ -120,7 +131,7 @@ namespace SMPL
 				verts.Append(new(bot.PointMoveAtAngle(0, thickness, false).ToSFML(), col));
 				verts.Append(new(bot.PointMoveAtAngle(180, thickness, false).ToSFML(), col));
 			}
-			for (float i = 0; i <= sz.Y * 4; i += spacing)
+			for(float i = 0; i <= sz.Y * 4; i += spacing)
 			{
 				var x = area.Position.X;
 				var y = area.Position.Y - sz.Y * 2 + i;
@@ -135,23 +146,14 @@ namespace SMPL
 				verts.Append(new(right.PointMoveAtAngle(270, thickness, false).ToSFML(), col));
 			}
 
-			var v = new Vertex[]
-			{
-				new(new(0, 0), SFML.Graphics.Color.Red),
-				new(new(100, 0), SFML.Graphics.Color.Red),
-				new(new(100, 100), SFML.Graphics.Color.Red),
-				new(new(0, 100), SFML.Graphics.Color.Red),
-			};
-
 			sceneCamera.RenderTexture.Draw(cellVerts);
 			sceneCamera.RenderTexture.Draw(specialCellVerts);
-			sceneCamera.RenderTexture.Draw(v, PrimitiveType.Quads);
 
 			SFML.Graphics.Color GetColor(float coordinate)
 			{
-				if (coordinate == 0)
+				if(coordinate == 0)
 					return SFML.Graphics.Color.Yellow;
-				else if (coordinate % 1000 == 0)
+				else if(coordinate % 1000 == 0)
 					return SFML.Graphics.Color.White;
 
 				return new SFML.Graphics.Color(50, 50, 50);
@@ -163,7 +165,7 @@ namespace SMPL
 		}
 		private void TryShowMousePos()
 		{
-			if (sceneMousePos.Visible == false)
+			if(sceneMousePos.Visible == false)
 				return;
 
 			var gridSpacing = GetGridSpacing();
@@ -175,10 +177,9 @@ namespace SMPL
 		}
 		private void TryDrawSelection()
 		{
-			if (isSelecting == false)
+			if(isSelecting == false)
 				return;
 
-			var ang = sceneCamera.GetPart<Area>().Angle;
 			var mousePos = Mouse.GetPosition(scene);
 			var topLeft = selectStartPos;
 			var botRight = new Vector2(mousePos.X, mousePos.Y);
@@ -188,16 +189,16 @@ namespace SMPL
 			var tr = sceneCamera.PointToCamera(topRight).ToSFML();
 			var br = sceneCamera.PointToCamera(botRight).ToSFML();
 			var bl = sceneCamera.PointToCamera(botLeft).ToSFML();
-			var col = new SFML.Graphics.Color(255, 255, 255, 100);
+			var fillCol = new SFML.Graphics.Color(0, 255, 255, 100);
+			var outCol = Color.Black;
+			var fill = new Vertex[] { new(tl, fillCol), new(tr, fillCol), new(br, fillCol), new(bl, fillCol), };
 
-			var verts = new Vertex[]
-			{
-				new(tl, col),
-				new(tr, col),
-				new(br, col),
-				new(bl, col),
-			};
-			sceneCamera.RenderTexture.Draw(verts, PrimitiveType.Quads);
+			new Line(tl.ToSystem(), tr.ToSystem()).Draw(sceneCamera, outCol);
+			new Line(tr.ToSystem(), br.ToSystem()).Draw(sceneCamera, outCol);
+			new Line(br.ToSystem(), bl.ToSystem()).Draw(sceneCamera, outCol);
+			new Line(bl.ToSystem(), tl.ToSystem()).Draw(sceneCamera, outCol);
+
+			sceneCamera.RenderTexture.Draw(fill, PrimitiveType.Quads);
 		}
 		private float GetGridSpacing()
 		{
@@ -222,7 +223,7 @@ namespace SMPL
 			var ang = prevMousePos.AngleBetweenPoints(pos);
 			prevMousePos = pos;
 
-			if (e.Button != MouseButtons.Middle || dist == 0)
+			if(e.Button != MouseButtons.Middle || dist == 0)
 				return;
 
 			var area = sceneCamera.GetPart<Area>();
@@ -240,8 +241,10 @@ namespace SMPL
 		}
 		private void OnMouseDownScene(object sender, MouseEventArgs e)
 		{
-			if (e.Button != MouseButtons.Left)
+			if(e.Button != MouseButtons.Left)
 				return;
+
+			sceneTab.Focus();
 
 			isSelecting = true;
 			var pos = Mouse.GetPosition(scene);
@@ -249,10 +252,27 @@ namespace SMPL
 		}
 		private void OnMouseUpScene(object sender, MouseEventArgs e)
 		{
+			if(e.Button != MouseButtons.Left && e.Button != MouseButtons.Right)
+				return;
+
 			isSelecting = false;
 			SceneSelect();
 		}
+		private void OnGridSpacingChange(object sender, EventArgs e)
+		{
+			if(gridSpacing.Text == "" || gridSpacing.Text.ToNumber() < 10)
+				gridSpacing.Text = "10";
+		}
+		private void OnKeyDownTopLeftTabs(object sender, System.Windows.Forms.KeyEventArgs e)
+		{
+			Hotkey.TryTriggerHotkeys();
+		}
+		private void OnSceneStatusClick(object sender, EventArgs e)
+		{
+			sceneTab.Focus();
+		}
 
+		#region RightClick
 		private void OnSceneRightClickMenuResetView(object sender, EventArgs e)
 		{
 			sceneAngle.Value = 0;
@@ -260,6 +280,11 @@ namespace SMPL
 			sceneCamera.SetPart(new Area());
 			UpdateZoom();
 		}
+		private void OnSceneRightClickMenuCreateSprite(object sender, EventArgs e)
+		{
+			new Sprite();
+		}
+		#endregion
 
 		private void UpdateZoom()
 		{
@@ -278,18 +303,18 @@ namespace SMPL
 		#region Log
 		private void OnOutputTextChange(object sender, EventArgs e)
 		{
-			if (log.Text.Length > 0 && log.Text[0] != '\n')
+			if(log.Text.Length > 0 && log.Text[0] != '\n')
 				log.Text = $"\n{log.Text}";
 		}
 		private void OnOutputKeyPress(object sender, System.Windows.Forms.KeyEventArgs e)
 		{
-			if (log.SelectionStart == 1 && log.SelectionLength == 0 && e.KeyCode == Keys.Back)
+			if(log.SelectionStart == 1 && log.SelectionLength == 0 && e.KeyCode == Keys.Back)
 			{
 				e.Handled = true;
 				return;
 			}
 
-			if (e.Control == false || e.KeyCode != Keys.V)
+			if(e.Control == false || e.KeyCode != Keys.V)
 				return;
 
 			((RichTextBox)sender).Paste(DataFormats.GetFormat("Text"));
@@ -297,7 +322,7 @@ namespace SMPL
 		}
 		private void OnCommandKeyPress(object sender, PreviewKeyDownEventArgs e)
 		{
-			if (e.KeyCode == Keys.Return)
+			if(e.KeyCode == Keys.Return)
 			{
 				Command.TryExecute(command.Text.Split(' ', StringSplitOptions.RemoveEmptyEntries));
 				command.Text = "";
@@ -311,10 +336,10 @@ namespace SMPL
 		}
 		internal void Log(object message, Color color, bool newLine)
 		{
-			if (outputActive.Checked)
+			if(outputActive.Checked)
 				return;
 
-			if (color == default)
+			if(color == default)
 				color = Color.White;
 
 			var newLineStr = newLine ? "\n" : "";

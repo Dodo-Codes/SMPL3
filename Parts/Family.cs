@@ -37,7 +37,7 @@ namespace SMPL.Parts
 		[JsonIgnore]
 		public ReadOnlyCollection<Family> Children => children.AsReadOnly();
 
-		public override void Destroy()
+		protected override void OnDestroy()
 		{
 			Parent = null;
 			for (int i = 0; i < children.Count; i++)
