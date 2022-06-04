@@ -1,24 +1,23 @@
 ﻿namespace SMPL.Tools
 {
-	public class Hitbox : Part
+	public class Hitbox
 	{
 		public List<Line> LocalLines { get; } = new();
 		public List<Line> Lines { get; } = new();
 		[JsonIgnore]
 		public bool IsHovered => ConvexContains(Scene.MouseCursorPosition);
 
-		protected override void OnUpdate()
+		public void Update(BaseObject obj)
 		{
-			if(Owner == null || Owner.HasPart<Area>() == false)
+			if(obj == null)
 				return;
 
-			var area = Owner.GetPart<Area>();
 			Lines.Clear();
 
 			for(int i = 0; i < LocalLines.Count; i++)
 			{
-				var a = area.GetPositionFromSelf(LocalLines[i].A);
-				var b = area.GetPositionFromSelf(LocalLines[i].B);
+				var a = obj.GetPositionFromSelf(LocalLines[i].A);
+				var b = obj.GetPositionFromSelf(LocalLines[i].B);
 				Lines.Add(new(a, b));
 			}
 		}

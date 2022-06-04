@@ -8,8 +8,8 @@
 		public Vector2 LocalSize { get; set; } = new(100, 100);
 		public Vector2 Size
 		{
-			get => LocalSize * GetArea().Scale;
-			set => LocalSize = value / GetArea().Scale;
+			get => LocalSize * Scale;
+			set => LocalSize = value / Scale;
 		}
 
 		public Vector2 OriginUnit { get; set; } = new(0.5f, 0.5f);
@@ -19,15 +19,14 @@
 			set => OriginUnit = value / LocalSize;
 		}
 
-		public Vector2 CornerA => GetArea().GetPositionFromSelf(-Origin);
-		public Vector2 CornerB => GetArea().GetPositionFromSelf(new Vector2(LocalSize.X, 0) - Origin);
-		public Vector2 CornerC => GetArea().GetPositionFromSelf(LocalSize - Origin);
-		public Vector2 CornerD => GetArea().GetPositionFromSelf(new Vector2(0, LocalSize.Y) - Origin);
+		public Vector2 CornerA => GetPositionFromSelf(-Origin);
+		public Vector2 CornerB => GetPositionFromSelf(new Vector2(LocalSize.X, 0) - Origin);
+		public Vector2 CornerC => GetPositionFromSelf(LocalSize - Origin);
+		public Vector2 CornerD => GetPositionFromSelf(new Vector2(0, LocalSize.Y) - Origin);
 
 		public Sprite()
 		{
-			UniqueID = $"{nameof(SMPL)} {nameof(Sprite)}";
-			SetPart(new Area());
+			UniqueID = $"{nameof(Sprite).ToLower()}";
 		}
 
 		protected override void OnDraw()
@@ -35,8 +34,7 @@
 			if(IsHidden)
 				return;
 
-			var camera = DrawTarget;
-			camera ??= Scene.MainCamera;
+			var camera = Scene.MainCamera;
 
 			var w = Texture == null ? 0 : Texture.Size.X;
 			var h = Texture == null ? 0 : Texture.Size.Y;
@@ -55,14 +53,6 @@
 			};
 
 			camera.renderTexture.Draw(verts, PrimitiveType.Quads, new(BlendMode, Transform.Identity, Texture, Shader));
-		}
-
-		private Area GetArea()
-		{
-			if(HasPart<Area>() == false)
-				SetPart(new Area());
-
-			return GetPart<Area>();
 		}
 	}
 }

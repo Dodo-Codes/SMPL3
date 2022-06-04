@@ -10,7 +10,7 @@
 		[JsonIgnore]
 		public Texture Texture => renderTexture.Texture;
 
-		public Vector2 Size => renderTexture.GetView().Size.ToSystem() / GetArea().Scale;
+		public Vector2 Size => renderTexture.GetView().Size.ToSystem() / Scale;
 		public Vector2 MouseCursorPosition
 		{
 			get { var p = Mouse.GetPosition(SMPL.scene); return PointToCamera(new(p.X, p.Y)); }
@@ -18,17 +18,13 @@
 		}
 
 		public Vector2 CornerA
-			=> GetArea().GetPositionFromSelf(
-				new(-renderTexture.GetView().Size.X * 0.5f, -renderTexture.GetView().Size.Y * 0.5f));
+			=> GetPositionFromSelf(new(-renderTexture.GetView().Size.X * 0.5f, -renderTexture.GetView().Size.Y * 0.5f));
 		public Vector2 CornerB
-			=> GetArea().GetPositionFromSelf(new(
-				renderTexture.GetView().Size.X * 0.5f, -renderTexture.GetView().Size.Y * 0.5f));
+			=> GetPositionFromSelf(new(renderTexture.GetView().Size.X * 0.5f, -renderTexture.GetView().Size.Y * 0.5f));
 		public Vector2 CornerC
-			=> GetArea().GetPositionFromSelf(new(
-				renderTexture.GetView().Size.X * 0.5f, renderTexture.GetView().Size.Y * 0.5f));
+			=> GetPositionFromSelf(new(renderTexture.GetView().Size.X * 0.5f, renderTexture.GetView().Size.Y * 0.5f));
 		public Vector2 CornerD
-			=> GetArea().GetPositionFromSelf(new(
-				-renderTexture.GetView().Size.X * 0.5f, renderTexture.GetView().Size.Y * 0.5f));
+			=> GetPositionFromSelf(new(-renderTexture.GetView().Size.X * 0.5f, renderTexture.GetView().Size.Y * 0.5f));
 
 		public Camera(Vector2 resolution)
 		{
@@ -72,10 +68,9 @@
 		{
 			base.Update();
 			var view = RenderTexture.GetView();
-			var area = GetArea();
-			view.Center = area.Position.ToSFML();
-			view.Rotation = area.Angle;
-			view.Size = (Resolution * area.Scale).ToSFML();
+			view.Center = Position.ToSFML();
+			view.Rotation = Angle;
+			view.Size = (Resolution * Scale).ToSFML();
 			RenderTexture.SetView(view);
 		}
 		public void Display()
@@ -99,9 +94,6 @@
 			resolutionY = (uint)((int)resolutionY).Limit(0, (int)Texture.MaximumSize);
 			renderTexture = new(resolutionX, resolutionY);
 			Resolution = new(resolutionX, resolutionY);
-
-			SetPart(new Family());
-			SetPart(new Area());
 		}
 		internal void DrawToWindow(RenderWindow window)
 		{
@@ -117,14 +109,6 @@
 			};
 
 			window.Draw(verts, PrimitiveType.Quads, new(Texture));
-		}
-
-		private Area GetArea()
-		{
-			if(HasPart<Area>() == false)
-				SetPart(new Area());
-
-			return GetPart<Area>();
 		}
 	}
 }

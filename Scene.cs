@@ -79,6 +79,11 @@
 		protected virtual void OnStop() { }
 		protected virtual void OnGameStop() { }
 
+		public BaseObject Pick(string uniqueID)
+		{
+			return uniqueID == null || objsUID.ContainsKey(uniqueID) == false ? default : objsUID[uniqueID];
+		}
+
 		internal void LoadAssets()
 		{
 			var assets = OnRequireAssets();

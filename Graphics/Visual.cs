@@ -15,7 +15,6 @@
 		[JsonIgnore]
 		public Shader Shader
 			=> ShaderPath != null && GetShaders().ContainsKey(ShaderPath) ? GetShaders()[ShaderPath] : null;
-		public Camera DrawTarget { get; set; }
 		public int Depth
 		{
 			get => depth;
@@ -23,14 +22,21 @@
 			{
 				var objs = Scene.CurrentScene.objsDepth;
 
-				if(objs.ContainsKey(depth) == false)
-					objs[depth] = new();
+				TryCreateDepth(depth);
 
 				if(objs[depth].Contains(this))
 					objs[depth].Remove(this);
 
 				depth = value;
+
+				TryCreateDepth(depth);
 				objs[depth].Add(this);
+
+				void TryCreateDepth(int depth)
+				{
+					if(objs.ContainsKey(depth) == false)
+						objs[depth] = new();
+				}
 			}
 		}
 

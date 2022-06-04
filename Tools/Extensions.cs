@@ -206,10 +206,11 @@ namespace SMPL.Tools
 		/// </summary>
 		public static float ToNumber(this string text)
 		{
+			if(text == null)
+				return float.NaN;
 			var result = 0.0f;
 			text = text.Replace(',', '.');
 			var parsed = float.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out result);
-
 			return parsed ? result : float.NaN;
 		}
 

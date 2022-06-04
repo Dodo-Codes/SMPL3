@@ -1,5 +1,6 @@
 global using System.Collections.ObjectModel;
 global using System.Numerics;
+global using System.Reflection;
 global using Newtonsoft.Json;
 global using SFML.Audio;
 global using SFML.Graphics;
@@ -7,7 +8,6 @@ global using SFML.System;
 global using SFML.Window;
 global using SMPL.Commands;
 global using SMPL.Graphics;
-global using SMPL.Parts;
 global using SMPL.Tools;
 global using Sprite = SMPL.Graphics.Sprite;
 global using Color = System.Drawing.Color;
@@ -81,7 +81,7 @@ namespace SMPL
 				if(camera == sceneCamera)
 				{
 					var view = camera.RenderTexture.GetView();
-					var sc = camera.GetPart<Area>().Scale;
+					var sc = camera.Scale;
 					view.Size = new(window.Size.X * sc, window.Size.Y * sc);
 					camera.RenderTexture.SetView(view);
 
@@ -113,8 +113,7 @@ namespace SMPL
 
 			var cellVerts = new VertexArray(PrimitiveType.Quads);
 			var specialCellVerts = new VertexArray(PrimitiveType.Quads);
-			var area = sceneCamera.GetPart<Area>();
-			var sc = area.Scale;
+			var sc = sceneCamera.Scale;
 			var sz = new Vector2(sceneTab.Width, sceneTab.Height) * sc;
 			var thickness = (float)gridThickness.Value;
 			var spacing = GetGridSpacing();
@@ -124,8 +123,8 @@ namespace SMPL
 
 			for(float i = 0; i <= sz.X * 4; i += spacing)
 			{
-				var x = area.Position.X - sz.X * 2 + i;
-				var y = area.Position.Y;
+				var x = sceneCamera.Position.X - sz.X * 2 + i;
+				var y = sceneCamera.Position.Y;
 				var top = new Vector2(x, y - sz.Y * 2).PointToGrid(new(spacing));
 				var bot = new Vector2(x, y + sz.Y * 2).PointToGrid(new(spacing));
 				var col = GetColor(top.X);
@@ -138,8 +137,8 @@ namespace SMPL
 			}
 			for(float i = 0; i <= sz.Y * 4; i += spacing)
 			{
-				var x = area.Position.X;
-				var y = area.Position.Y - sz.Y * 2 + i;
+				var x = sceneCamera.Position.X;
+				var y = sceneCamera.Position.Y - sz.Y * 2 + i;
 				var left = new Vector2(x - sz.X * 2, y).PointToGrid(new(spacing));
 				var right = new Vector2(x + sz.X * 2, y).PointToGrid(new(spacing));
 				var col = GetColor(left.Y);
@@ -221,7 +220,7 @@ namespace SMPL
 		}
 		private void OnMouseMoveScene(object sender, MouseEventArgs e)
 		{
-			var sc = sceneCamera.GetPart<Area>().Scale;
+			var sc = sceneCamera.Scale;
 			var scale = sceneCamera.Size / new Vector2(topLeftTabs.Width, topLeftTabs.Height);
 			var pos = new Vector2(MousePosition.X, MousePosition.Y) * scale;
 			var dist = prevMousePos.DistanceBetweenPoints(pos) * sc;
@@ -231,8 +230,7 @@ namespace SMPL
 			if(e.Button != MouseButtons.Middle || dist == 0)
 				return;
 
-			var area = sceneCamera.GetPart<Area>();
-			area.Position = area.Position.PointMoveAtAngle(sceneCamera.GetPart<Area>().Angle + ang, -dist, false);
+			sceneCamera.Position = sceneCamera.Position.PointMoveAtAngle(sceneCamera.Angle + ang, -dist, false);
 
 			System.Windows.Forms.Cursor.Current = Cursors.NoMove2D;
 		}
@@ -242,7 +240,7 @@ namespace SMPL
 		}
 		private void OnSceneRotate(object sender, EventArgs e)
 		{
-			sceneCamera.GetPart<Area>().Angle = ((float)sceneAngle.Value).Map(0, 100, 0, 360);
+			sceneCamera.Angle = ((float)sceneAngle.Value).Map(0, 100, 0, 360);
 		}
 		private void OnMouseDownScene(object sender, MouseEventArgs e)
 		{
@@ -285,23 +283,24 @@ namespace SMPL
 		{
 			sceneAngle.Value = 0;
 			sceneZoom.Value = 10;
-			sceneCamera.SetPart(new Area());
+			sceneCamera.Position = new();
+			sceneCamera.Angle = 0;
+			sceneCamera.Scale = 1;
 			UpdateZoom();
 		}
 		private void OnSceneRightClickMenuCreateSprite(object sender, EventArgs e)
 		{
-			var spr = new Sprite();
-			spr.GetPart<Area>().Position = rightClickPos;
+			new Sprite { Position = rightClickPos };
 		}
 		#endregion
 
 		private void UpdateZoom()
 		{
-			sceneCamera.GetPart<Area>().Scale = ((float)sceneZoom.Value).Map(0, 100, 0.3f, 10f);
+			sceneCamera.Scale = ((float)sceneZoom.Value).Map(0, 100, 0.3f, 10f);
 		}
 		private void SceneSelect()
 		{
-			var ang = sceneCamera.GetPart<Area>().Angle;
+			var ang = sceneCamera.Angle;
 			var topLeft = selectStartPos;
 			var botRight = sceneCamera.MouseCursorPosition;
 			var side = topLeft.DistanceBetweenPoints(botRight) / 1.4f;

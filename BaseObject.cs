@@ -3,18 +3,16 @@
 	public abstract class BaseObject
 	{
 		private string uid;
-		private int order;
-		private readonly Dictionary<Type, Part> parts = new();
 
 		public string UniqueID
 		{
 			get => uid;
 			set
 			{
-				value = value.Trim();
-
 				if(string.IsNullOrWhiteSpace(value))
-					value = "empty";
+					value = "";
+
+				value = value.Trim();
 
 				var i = 1;
 				var freeUID = value;
@@ -33,110 +31,199 @@
 				objsUID[uid] = this;
 			}
 		}
-		public int UpdateOrder
+
+		private Vector2 localPos;
+		private float localAng, localSc;
+		private Matrix3x2 global;
+
+		public Vector2 LocalDirection
 		{
-			get => order;
+			get => Vector2.Normalize(LocalAngle.AngleToDirection());
+			set => LocalAngle = Vector2.Normalize(value).DirectionToAngle();
+		}
+		public Vector2 Direction
+		{
+			get => Vector2.Normalize(Angle.AngleToDirection());
+			set => Angle = Vector2.Normalize(value).DirectionToAngle();
+		}
+
+		public Vector2 LocalPosition
+		{
+			get => localPos;
+			set { localPos = value; UpdateSelfAndChildren(); }
+		}
+		public float LocalScale
+		{
+			get => localSc;
+			set { localSc = value; UpdateSelfAndChildren(); }
+		}
+		public float LocalAngle
+		{
+			get => localAng;
+			set { localAng = value; UpdateSelfAndChildren(); }
+		}
+
+		public Vector2 Position
+		{
+			get => GetPosition(global);
+			set => LocalPosition = GetLocalPositionFromParent(value);
+		}
+		public float Scale
+		{
+			get => GetScale(global);
+			set => LocalScale = GetScale(GlobalToLocal(value, Angle, Position));
+		}
+		public float Angle
+		{
+			get => GetAngle(global);
+			set => LocalAngle = GetAngle(GlobalToLocal(Scale, value, Position));
+		}
+
+		private List<string> children = new();
+		private string parent;
+
+		public string Parent
+		{
+			get => parent;
 			set
 			{
-				var objsOrder = Scene.CurrentScene.objsOrder;
+				if(parent == value)
+					return;
 
-				if(objsOrder.ContainsKey(order) == false)
-					objsOrder[order] = new();
+				var p = Scene.CurrentScene.Pick(parent);
+				if(parent != value && parent != null && p.children != null)
+					p.children.Remove(uid);
 
-				if(objsOrder[order].Contains(this))
-					objsOrder[order].Remove(this);
+				var prevPos = Position;
+				var prevAng = Angle;
+				var prevSc = Scale;
 
-				order = value;
-				objsOrder[order].Add(this);
+				parent = value;
+
+				var newP = Scene.CurrentScene.Pick(parent);
+				if(parent != null)
+					newP.children.Add(uid);
+
+				Position = prevPos;
+				Angle = prevAng;
+				Scale = prevSc;
 			}
 		}
+		public ReadOnlyCollection<string> Children => children.AsReadOnly();
 
 		public BaseObject()
 		{
-			UpdateOrder = 0;
+			LocalScale = 1;
 		}
 
-		public void SetPart(Part part)
+		public Vector2 GetLocalPositionFromParent(Vector2 position)
 		{
-			var fail = false;
-			var type = part.GetType();
-			for(int i = 0; i < part.required.Count; i++)
-				if(HasPart(part.required[i]) == false)
-				{
-					Debug.LogError($"The {nameof(Part)} '{type.Name}' cannot be set in this {nameof(BaseObject)} " +
-						$"since it requires the {nameof(Part)} '{part.required[i].Name}'.",
-						$"To resolve that, set the required '{part.required[i].Name}' {nameof(Part)} beforehand.");
-					fail = true;
-				}
+			return GetPosition(GlobalToLocal(Scale, Angle, position));
+		}
+		public Vector2 GetPositionFromParent(Vector2 localPosition)
+		{
+			return GetPosition(LocalToGlobal(LocalScale, LocalAngle, localPosition));
+		}
+		public Vector2 GetLocalPositionFromSelf(Vector2 position)
+		{
+			var m = Matrix3x2.Identity;
+			m *= Matrix3x2.CreateTranslation(position);
+			m *= Matrix3x2.CreateTranslation(Position);
 
-			if(fail == false)
+			return GetPosition(m);
+		}
+		public Vector2 GetPositionFromSelf(Vector2 localPosition)
+		{
+			var m = Matrix3x2.Identity;
+			m *= Matrix3x2.CreateTranslation(localPosition);
+			m *= Matrix3x2.CreateRotation(LocalAngle.DegreesToRadians());
+			m *= Matrix3x2.CreateScale(LocalScale);
+			m *= Matrix3x2.CreateTranslation(LocalPosition);
+
+			return GetPosition(m * GetParentMatrix());
+		}
+
+		private void UpdateSelfAndChildren()
+		{
+			global = LocalToGlobal(LocalScale, LocalAngle, LocalPosition);
+
+			for(int i = 0; i < children.Count; i++)
+				Scene.CurrentScene.Pick(children[i]).UpdateSelfAndChildren();
+		}
+
+		internal Matrix3x2 LocalToGlobal(float localScale, float localAngle, Vector2 localPosition)
+		{
+			var c = Matrix3x2.Identity;
+			c *= Matrix3x2.CreateScale(localScale);
+			c *= Matrix3x2.CreateRotation(localAngle.DegreesToRadians());
+			c *= Matrix3x2.CreateTranslation(localPosition);
+
+			return c * GetParentMatrix();
+		}
+		internal Matrix3x2 GlobalToLocal(float scale, float angle, Vector2 position)
+		{
+			var c = Matrix3x2.Identity;
+			c *= Matrix3x2.CreateScale(scale);
+			c *= Matrix3x2.CreateRotation(angle.DegreesToRadians());
+			c *= Matrix3x2.CreateTranslation(position);
+
+			return c * GetInverseParentMatrix();
+		}
+		internal Matrix3x2 GetParentMatrix()
+		{
+			var p = Matrix3x2.Identity;
+			var parent = Scene.CurrentScene.Pick(Parent);
+			if(parent != null)
 			{
-				part.Owner = this;
-				parts[type] = part;
-				part.Initialize();
+				p *= Matrix3x2.CreateScale(parent.Scale);
+				p *= Matrix3x2.CreateRotation(parent.Angle.DegreesToRadians());
+				p *= Matrix3x2.CreateTranslation(parent.Position);
 			}
+			return p;
 		}
-
-		public T GetPart<T>() where T : Part
+		internal Matrix3x2 GetInverseParentMatrix()
 		{
-			return Get<T>(typeof(T));
-		}
-		public T GetPart<T>(Type partType) where T : Part
-		{
-			return Get<T>(partType);
-		}
-		private T Get<T>(Type partType) where T : Part
-		{
-			if(HasPart(partType) == false)
+			var inverseParent = Matrix3x2.Identity;
+			var parent = Scene.CurrentScene.Pick(Parent);
+			if(parent != null)
 			{
-				Debug.LogError($"No {nameof(Part)} '{typeof(T).Name}' was found on that {nameof(BaseObject)}.");
-				return default;
+				Matrix3x2.Invert(Matrix3x2.CreateScale(parent.Scale), out var s);
+				Matrix3x2.Invert(Matrix3x2.CreateRotation(parent.Angle.DegreesToRadians()), out var r);
+				Matrix3x2.Invert(Matrix3x2.CreateTranslation(parent.Position), out var t);
+
+				inverseParent *= t;
+				inverseParent *= r;
+				inverseParent *= s;
 			}
-			return (T)parts[partType];
+
+			return inverseParent;
 		}
 
-		public bool HasPart(Type partType)
+		internal static float GetAngle(Matrix3x2 matrix)
 		{
-			return parts.ContainsKey(partType);
+			return MathF.Atan2(matrix.M12, matrix.M11).RadiansToDegrees();
 		}
-		public bool HasPart<T>() where T : Part
+		internal static Vector2 GetPosition(Matrix3x2 matrix)
 		{
-			return parts.ContainsKey(typeof(T));
+			return new(matrix.M31, matrix.M32);
 		}
-
-		public void RemovePart(Type partType)
+		internal static float GetScale(Matrix3x2 matrix)
 		{
-			Remove(partType);
-		}
-		public void RemovePart<T>() where T : Part
-		{
-			Remove(typeof(T));
-		}
-		private void Remove(Type partType)
-		{
-			if(parts.ContainsKey(partType) == false)
-				return;
-
-			parts[partType].Owner = null;
-			parts.Remove(partType);
+			return MathF.Sqrt(matrix.M11 * matrix.M11 + matrix.M12 * matrix.M12);
 		}
 
-		public void RemoveAllParts()
-		{
-			foreach(var kvp in parts)
-				kvp.Value.Owner = null;
-
-			parts.Clear();
-		}
-
-		public virtual void Update()
-		{
-			foreach(var kvp in parts)
-				kvp.Value.Update();
-		}
+		public virtual void Update() { }
 		public virtual void Destroy()
 		{
-			RemoveAllParts();
+			Parent = null;
+			for(int i = 0; i < children.Count; i++)
+				Scene.CurrentScene.Pick(children[i]).Parent = null;
+			children = null;
+		}
+
+		public override string ToString()
+		{
+			return uid;
 		}
 	}
 }

@@ -8,19 +8,22 @@ namespace SMPL.Tools
 
 		static Hotkey()
 		{
-			AddHotkey<HotkeyUndo>();
+			var type = typeof(Hotkey);
+			var assembly = Assembly.GetAssembly(type);
+			var types = assembly.GetTypes();
 
-			void AddHotkey<T>() where T : Hotkey
-			{
-				var hotkey = (Hotkey)Activator.CreateInstance<T>();
-				hotkeys.Add(hotkey);
-			}
+			for(int i = 0; i < types.Length; i++)
+				if(types[i].IsSubclassOf(type))
+				{
+					var hotkey = (Hotkey)Activator.CreateInstance(types[i]);
+					hotkeys.Add(hotkey);
+				}
 		}
 
 		private void TryTrigger()
 		{
 			var keys = GetKeys();
-			if (Pressed(keys.Item1) && Pressed(keys.Item2) && Pressed(keys.Item3))
+			if(Pressed(keys.Item1) && Pressed(keys.Item2) && Pressed(keys.Item3))
 				Trigger();
 
 			bool Pressed(Key key) => key == Key.Unknown || IsKeyPressed(key);
@@ -31,13 +34,13 @@ namespace SMPL.Tools
 			var result = "UnknownKey";
 			var keys = GetKeys();
 
-			if (keys.Item1 != Key.Unknown)
+			if(keys.Item1 != Key.Unknown)
 				result = $"{keys.Item1}";
 
-			if (keys.Item2 != Key.Unknown)
+			if(keys.Item2 != Key.Unknown)
 				result += $" + {keys.Item2}";
 
-			if (keys.Item3 != Key.Unknown)
+			if(keys.Item3 != Key.Unknown)
 				result += $" + {keys.Item3}";
 
 			return result;
@@ -48,7 +51,7 @@ namespace SMPL.Tools
 
 		public static void TryTriggerHotkeys()
 		{
-			for (int i = 0; i < hotkeys.Count; i++)
+			for(int i = 0; i < hotkeys.Count; i++)
 				hotkeys[i].TryTrigger();
 		}
 	}
