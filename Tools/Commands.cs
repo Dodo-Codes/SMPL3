@@ -2,7 +2,7 @@
 {
 	public abstract class Command
 	{
-		protected static readonly SortedDictionary<string, Command> commands = new();
+		public static readonly SortedDictionary<string, Command> commands = new();
 
 		static Command()
 		{
@@ -110,114 +110,7 @@
 			=> new string[] { "uniqueID", "variable", "newValue" }[index];
 		public override void Execute(string[] parameters)
 		{
-			var obj = Scene.CurrentScene.Pick(parameters[0]);
-
-			if(obj == null)
-			{
-				DisplayCommand();
-				Debug.LogError($"No {{object}} with [{nameof(obj.UniqueID)}] '{parameters[0]}' exists.");
-				if(Scene.CurrentScene.objsUID.Count > 0)
-					commands["objects"].Execute(null);
-				return;
-			}
-
-			var props = obj.GetType().GetProperties();
-			var prop = default(PropertyInfo);
-
-			if(parameters[1] != null)
-				for(int i = 0; i < props.Length; i++)
-					if(props[i].CanWrite && props[i].Name.ToLower() == parameters[1].ToLower())
-						prop = props[i];
-
-			if(prop == null)
-			{
-				var propNames = "";
-				for(int i = 0; i < props.Length; i++)
-				{
-					if(props[i].CanWrite == false)
-						continue;
-
-					var name = props[i].Name;
-					var sep = i == 0 ? "" : " ";
-					propNames += $"{sep}[{name}]";
-				}
-				var list = $"List of all [variables] of {{{parameters[0]}}}: '{propNames}'.";
-
-				if(parameters[1] == null)
-				{
-					Debug.Log($"\n[?] {list}", Color.Cyan);
-					return;
-				}
-
-				DisplayCommand();
-				Debug.LogError($"{{{parameters[0]}}} does not have [{parameters[1]}].", list);
-				return;
-			}
-
-			var isInt = prop.PropertyType == typeof(int);
-			var isFloat = prop.PropertyType == typeof(float);
-			var isVec = prop.PropertyType == typeof(Vector2);
-			var isCol = prop.PropertyType == typeof(Color);
-
-			var numb = parameters[2].ToNumber();
-			var values = parameters[2]?.Split(',');
-
-			if(values == null)
-			{
-				Debug.Log($"\n[?] The [{prop.Name}] of {{{parameters[0]}}} is '{prop.GetValue(obj)}'.", Color.Cyan);
-				return;
-			}
-
-			var vec = new Vector2(GetNumber(isVec, 2, 0), GetNumber(isVec, 2, 1));
-			var col1 = new Vector2(GetNumber(isCol, 4, 0).Limit(0, 255), GetNumber(isCol, 4, 1).Limit(0, 255));
-			var col2 = new Vector2(GetNumber(isCol, 4, 2).Limit(0, 255), GetNumber(isCol, 4, 3).Limit(0, 255));
-
-			var isInvalidInt = isInt && float.IsNaN(numb);
-			var isInvalidFloat = isFloat && float.IsNaN(numb);
-			var isInvalidVec = isVec && vec.IsNaN();
-			var isInvalidCol = isCol && (col1.IsNaN() || col2.IsNaN());
-
-			if(isInvalidInt || isInvalidFloat || isInvalidVec || isInvalidCol)
-			{
-				var moreDetail = "";
-
-				if(isInvalidFloat)
-					moreDetail = "It expects a number.";
-				else if(isInvalidInt)
-					moreDetail = "It expects a whole number.";
-				else if(isInvalidVec)
-					moreDetail = "It expects two numbers (x, y), separated by ','. For example: '69,420'.";
-				else if(isInvalidCol)
-					moreDetail = "It expects four numbers (red, green, blue, alpha), " +
-						"separated by ','. For example: '10,140,240,255'.";
-
-				DisplayCommand();
-				Debug.LogError($"The [{prop.Name}] of {{{parameters[0]}}} " +
-					$"does not understand the value '{parameters[2]}'.", moreDetail);
-				return;
-			}
-
-			if(isFloat)
-				prop.SetValue(obj, numb);
-			else if(isInt)
-				prop.SetValue(obj, (int)numb);
-			else if(isVec)
-				prop.SetValue(obj, vec);
-			else if(isCol)
-				prop.SetValue(obj, Color.FromArgb((byte)col2.Y, (byte)col1.X, (byte)col1.Y, (byte)col2.X));
-			else // string
-				prop.SetValue(obj, parameters[2]);
-
-			float GetNumber(bool typeCondition, int amount, int index)
-			{
-				return typeCondition && values != null && values.Length == amount ?
-					values[index].ToNumber() : float.NaN;
-			}
-			void DisplayCommand()
-			{
-				Debug.Log("\nCommand: ", Color.Gray, false);
-				Display(false);
-			}
+			Dodo.Set(parameters[0], parameters[1], parameters[2]);
 		}
 	}
 	public class CommandObjects : Command

@@ -1,6 +1,7 @@
 global using System.Collections.ObjectModel;
 global using System.Numerics;
 global using System.Reflection;
+global using Fasterflect;
 global using Newtonsoft.Json;
 global using SFML.Audio;
 global using SFML.Graphics;
@@ -44,6 +45,11 @@ namespace SMPL
 			CenterView(scene);
 			CenterView(game);
 			UpdateZoom();
+
+			var spr = new Sprite() { Position = new(100, 200) };
+			var v = Dodo.DoGet(spr, "GetPositionFromSelf", new Vector2(0, 0));
+			var v2 = Dodo.DoGet(spr, "GetPositionFromSelf", new Vector2(100, 0));
+			Dodo.DoGet(spr, "g", 3);
 
 			void CenterView(RenderWindow window)
 			{
